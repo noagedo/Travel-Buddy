@@ -5,6 +5,9 @@ import TextField from '@mui/material/TextField';
 import { Box, Typography } from '@mui/material';
 import Grid from '@mui/material/Grid';
 import logo from '../assets/logo.webp';
+import Button from '@mui/material/Button';
+
+
 
 function Copyright() {
   return (
@@ -59,11 +62,12 @@ const Footer = () => {
             </Typography>
             <Box component="ul" sx={{ m: 0, listStyle: 'none', p: 0 }}>
               <Box component="li" sx={{ py: 0.5 }}>
-                <Link href="/premium-themes/onepirate/terms/">Terms</Link>
+              <Button color='inherit' component={Link} href='/privacy-terms'>
+                Privacy Terms
+                </Button>
+
               </Box>
-              <Box component="li" sx={{ py: 0.5 }}>
-                <Link href="/premium-themes/onepirate/privacy/">Privacy</Link>
-              </Box>
+              
             </Box>
           </Grid>
 

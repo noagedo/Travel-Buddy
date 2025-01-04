@@ -6,6 +6,7 @@ import SignUp from './components/SignUp';
 import SignIn from './components/SignIn';
 import Posts from './components/Posts';
 import PersonalArea from './components/PersonalArea';
+import PrivacyTerms from './components/PrivacyTerms';
 //import SignUp from './components/SignUp';
 //import Post from './components/Post';
 
@@ -19,6 +20,7 @@ const App: React.FC = () => {
         <Route path="/sign-in" element={<SignIn />} />
         <Route path="/posts" element={<Posts />} />
         <Route path="/personal-area" element={<PersonalArea />} />
+        <Route path="/privacy-terms" element={<PrivacyTerms />} />
       </Routes>
     </Router>
   );
