@@ -14,7 +14,7 @@ const App: React.FC = () => {
       <ScrollIndicator />
       <Categories/>
       <Footer/>
-      
+
     </div>
   );
 };
