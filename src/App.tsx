@@ -1,21 +1,24 @@
-// src/App.tsx
 import React from 'react';
-import Navbar from './components/NavBar';
-import Hero from './components/Hero';
-import ScrollIndicator from './components/ScrollIndicator';
-import Footer from './components/Footer';
-import Categories from './components/Categories';
+import NavBar from './components/NavBar';
+import HomeBeforeSignIn from './components/Home';
+import { BrowserRouter as Router, Routes, Route } from 'react-router-dom';
+import SignUp from './components/SignUp';
+import SignIn from './components/SignIn';
+import Posts from './components/Posts';
+//import SignUp from './components/SignUp';
+//import Post from './components/Post';
 
 const App: React.FC = () => {
   return (
-    <div>
-      <Navbar />
-      <Hero />
-      <ScrollIndicator />
-      <Categories/>
-      <Footer/>
-
-    </div>
+    <Router>
+      <NavBar /> {/* מציג את ה-navbar בכל עמוד */}
+      <Routes>
+        <Route path="/" element={<HomeBeforeSignIn />} />
+        <Route path="/sign-up" element={<SignUp />} />
+        <Route path="/sign-in" element={<SignIn />} />
+        <Route path="/posts" element={<Posts />} />
+      </Routes>
+    </Router>
   );
 };
 

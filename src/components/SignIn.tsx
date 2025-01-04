@@ -3,13 +3,12 @@ import { Box, Button, TextField, Typography, Stack } from '@mui/material';
 import { useNavigate } from 'react-router-dom'; // ייבוא useNavigate
 import logoGif from '../assets/Animation - 1735911293502.gif'; // נתיב לקובץ הגיף שלך
 
-const SignUp: React.FC = () => {
-	const navigate = useNavigate(); // יצירת פונקציה לניווט
-
-	// פונקציה שתפעיל ניווט לעמוד הבית
+const SignIn: React.FC = () => {
+    const navigate = useNavigate(); // יצירת פונקציה לניווט
+    // פונקציה שתפעיל ניווט לעמוד הבית
 	const handleSignUp = () => {
 		// כאן ניתן להוסיף לוגיקה נוספת אם צריך, למשל ולידציה
-		navigate('/'); // נווט לעמוד הבית
+		navigate('/posts'); // נווט לעמוד הבית
 	};
 
 	return (
@@ -44,15 +43,9 @@ const SignUp: React.FC = () => {
 					sx={{ width: 150, height: 150, marginBottom: 2 }}
 				/>
 				<Typography variant="h4" component="h1" gutterBottom>
-					Sign up
+					Sign in
 				</Typography>
 				<Stack spacing={2} sx={{ width: '100%' }}>
-					<TextField
-						label="Full name"
-						variant="outlined"
-						fullWidth
-						required
-					/>
 					<TextField
 						label="Email"
 						type="email"
@@ -67,14 +60,15 @@ const SignUp: React.FC = () => {
 						fullWidth
 						required
 					/>
+					
 					<Button variant="contained" fullWidth onClick={handleSignUp}>
-						Sign up
-					</Button>
+                        Sign in
+                    </Button>
 					<Typography align="center" variant="body2">
 						or
 					</Typography>
 					<Button variant="outlined" fullWidth>
-						Sign up with Google
+						Sign in with Google
 					</Button>
 				</Stack>
 			</Box>
@@ -82,4 +76,4 @@ const SignUp: React.FC = () => {
 	);
 };
 
-export default SignUp;
+export default SignIn;
