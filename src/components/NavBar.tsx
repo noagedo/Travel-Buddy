@@ -2,7 +2,8 @@ import React from 'react';
 import { AppBar, Toolbar, Typography, Box, Button } from '@mui/material';
 import logo from '../assets/logo.webp';
 
-const NavBar: React.FC = () => {
+const Navbar: React.FC = () => {
+
   return (
     <AppBar position="static" sx={{ backgroundColor: '#333' }}>
       <Toolbar sx={{ display: 'flex', justifyContent: 'space-between' }}>
@@ -28,4 +29,6 @@ const NavBar: React.FC = () => {
   );
 };
 
-export default NavBar;
+
+export default Navbar;
+
