@@ -1,6 +1,6 @@
 import React from 'react';
 import { AppBar, Toolbar, Typography, Box, Button } from '@mui/material';
-import { Link } from 'react-router-dom'; // ייבוא Link ו-useNavigate מ-react-router-dom
+import { Link } from 'react-router-dom'; 
 import logo from '../assets/logo.webp';
 
 
@@ -16,9 +16,11 @@ const NavBar: React.FC = () => {
                 variant="h4"
                 color="inherit"
                 sx={{
-                    fontFamily: '"Sofia", sans-serif', // שימוש בפונט
+                    fontFamily: '"Sofia", sans-serif', 
                 }}  >
+                  <Button color='inherit' component={Link} to='/'>
                 TravelBuddy
+                </Button>
             </Typography>
         </Box>
 
