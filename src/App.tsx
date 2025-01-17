@@ -4,10 +4,13 @@ import HomeBeforeSignIn from './components/Home';
 import { BrowserRouter as Router, Routes, Route } from 'react-router-dom';
 import SignUp from './components/SignUp';
 import SignIn from './components/SignIn';
-import Posts from './components/Posts';
+
+import Posts from './components/PostsList';
 import PersonalArea from './components/PersonalArea';
 //import SignUp from './components/SignUp';
 //import Post from './components/Post';
+import AddPost from './components/AddPost';
+
 
 const App: React.FC = () => {
   return (
@@ -19,6 +22,7 @@ const App: React.FC = () => {
         <Route path="/sign-in" element={<SignIn />} />
         <Route path="/posts" element={<Posts />} />
         <Route path="/personal-area" element={<PersonalArea />} />
+        <Route path="/add-post" element={<AddPost />} />
       </Routes>
     </Router>
   );
