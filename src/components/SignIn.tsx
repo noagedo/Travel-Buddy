@@ -1,7 +1,7 @@
 import React from 'react';
 import { Box, Button, TextField, Typography, Stack } from '@mui/material';
 import { useNavigate } from 'react-router-dom'; // ייבוא useNavigate
-import logoGif from '../assets/Animation - 1735911293502.gif'; // נתיב לקובץ הגיף שלך
+import logoGif from '../assets/Animation - 1735911293502.gif'; 
 
 const SignIn: React.FC = () => {
     const navigate = useNavigate(); // יצירת פונקציה לניווט
@@ -72,8 +72,10 @@ const SignIn: React.FC = () => {
 					</Button>
 				</Stack>
 			</Box>
+			
 		</Box>
 	);
+	
 };
 
 export default SignIn;

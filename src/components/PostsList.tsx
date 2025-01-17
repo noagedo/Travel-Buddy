@@ -21,13 +21,13 @@ const Posts: React.FC = () => {
                 ]} // מערך של תמונות
                 userName="John Doe" // שם המשתמש
                 subheader= "September 14, 2016" // תאריך
-                content = "Paradise Found: Koh Phi Phi, Thailand 🌴
+                content = {`Paradise Found: Koh Phi Phi, Thailand 🌴
 
                     If you're dreaming of turquoise waters, white sandy beaches, and unforgettable adventures, Koh Phi Phi is the place to be! From exploring the iconic Maya Bay to snorkeling with vibrant marine life, this island has it all.
 
                     Don’t miss the lively beach bars and stunning sunsets that make every moment magical. Perfect for both relaxation and adventure, Koh Phi Phi is a must-visit for your Thailand trip! ✨🌊
 
-                    Have you been? Share your favorite memories below! 💙" // תוכן
+                    Have you been? Share your favorite memories below! 💙`} // תוכן
                 authorAvatar = {avatar} // תמונת פרופיל
             />
             <Post 
