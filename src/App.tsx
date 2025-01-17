@@ -4,6 +4,7 @@ import HomeBeforeSignIn from './components/Home';
 import { BrowserRouter as Router, Routes, Route } from 'react-router-dom';
 import SignUp from './components/SignUp';
 import SignIn from './components/SignIn';
+
 import Posts from './components/PostsList';
 import PersonalArea from './components/PersonalArea';
 //import SignUp from './components/SignUp';
