@@ -1,10 +1,11 @@
-import apiClient, { CanceledError } from "./api-client"
+import  { CanceledError } from "./api-client"
+import createHttpService from "./http-servies"
 
 
 export { CanceledError }
 
 export interface Post {
-    _id: number
+    _id: string
     sender: string;
     content: string;
     createdAt: string;
@@ -12,11 +13,6 @@ export interface Post {
     photos: string[];
 }
 
-const getAllPosts = () => {
-    const abortController = new AbortController()
-    const request = apiClient.get<Post[]>("/posts"
-        , { signal: abortController.signal })
-    return { request, abort: () => abortController.abort() }
-}
+const postService = createHttpService<Post>("/posts");
 
-export default { getAllPosts }
+export default postService;

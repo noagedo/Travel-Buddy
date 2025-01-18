@@ -47,6 +47,7 @@ import { FC } from "react";
 import ItemsList from "./ItemsList";
 import usePosts from "../hooks/usePosts";
 
+
 const PostsList: FC = () => {
   const { posts, isLoading, error } = usePosts();
 
@@ -58,7 +59,7 @@ const PostsList: FC = () => {
       
       {posts.map((post) => (
         <ItemsList
-          key={post._id}
+         key={post._id}
           _id={post._id}
           sender={post.sender}
           content={post.content}
