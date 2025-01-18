@@ -1,53 +1,67 @@
-import { useState, FC } from "react";
-import ItemsListStyle from "./ItemsList.module.css"
+import { FC, useState } from "react";
+import { Card, CardContent, Typography, Box, Avatar, IconButton } from "@mui/material";
+import FavoriteIcon from "@mui/icons-material/Favorite";
 
 interface ItemsListProps {
-    title: string,
-    items: string[],
-    onItemSelected: (index: number) => void
+  _id: number;
+  sender: string;
+  content: string;
+  createdAt: string;
+  likes: number;
+  photos: string[];
+  onItemSelected: (index: number) => void;
 }
 
+const ItemsList: FC<ItemsListProps> = ({ _id, sender, content, createdAt, likes, photos, onItemSelected }) => {
+  const [selected, setSelected] = useState<boolean>(false);
 
-const ItemsList: FC<ItemsListProps> = ({ title, items, onItemSelected }) => {
-    const [selectedIndex, setSelectedIndex] = useState(0);
-    const [render, setRender] = useState(0)
+  const handleSelect = () => {
+    setSelected(!selected);
+    onItemSelected(_id);
+  };
 
-    console.log("PostsList render")
+  return (
+    <Card 
+      sx={{ marginBottom: 2, border: selected ? '2px solid blue' : 'none' }}
+      onClick={handleSelect}
+    >
+      <CardContent>
+        {/* Sender Info */}
+        <Box display="flex" alignItems="center">
+          <Avatar>{sender.charAt(0).toUpperCase()}</Avatar>
+          <Box ml={2}>
+            <Typography variant="h6">{sender}</Typography>
+            <Typography variant="body2" color="textSecondary">
+              {new Date(createdAt).toLocaleString()}
+            </Typography>
+          </Box>
+        </Box>
 
-    const onClick = (index: number) => {
-        console.log("click " + index)
-        setSelectedIndex(index)
-    }
+        {/* Post Content */}
+        <Typography variant="body1" mt={2}>
+          {content}
+        </Typography>
 
-    const addItem = () => {
-        console.log("add item")
-        items.push("New item")
-        setRender(render + 1)
-    }
+        {/* Post Images */}
+        {photos.length > 0 && photos.map((photo, index) => (
+          <img
+            key={index}
+            src={photo}
+            alt={`Post photo ${index}`}
+            style={{ width: '100%', marginTop: '10px', borderRadius: '8px' }}
+          />
+        ))}
 
-    const onSelect = () => {
-        onItemSelected(selectedIndex)
-    }
-    return (
-        <div className={ItemsListStyle.container}>
-            <h1>{title}</h1>
-            {items.length == 0 && <p>No items</p>}
-            {items.length != 0 && <ul className="list-group">
-                {items.map((item, index) => {
-                    return <li
-                        className={selectedIndex == index ? 'list-group-item active' : 'list-group-item'}
-                        key={index}
-                        onClick={() => { onClick(index) }}>
-                        {index} {item}
-                    </li>
-                })}
-            </ul>
-            }
-            <button className={'btn btn-primary m-3'} onClick={() => { addItem() }}>Add</button>
-            <button className={'btn btn-primary'} onClick={() => { onSelect() }}>Select</button>
-        </div>
-    )
+        {/* Likes Section */}
+        <Box display="flex" alignItems="center" mt={1}>
+          <IconButton aria-label="like">
+            <FavoriteIcon color="error" />
+          </IconButton>
+          <Typography variant="body2">{likes} Likes</Typography>
+        </Box>
+      </CardContent>
+    </Card>
+  );
+};
 
-}
-
-export default ItemsList
+export default ItemsList;
