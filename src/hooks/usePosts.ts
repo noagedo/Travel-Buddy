@@ -12,15 +12,15 @@ const usePosts = () => {
         setIsLoading(true)
         const { request, abort } = postService.getAllPosts()
         request
-            .then((res) => {
-                setPosts(res.data)
-                setIsLoading(false)
+            .then((res: { data: Post[] }) => {
+            setPosts(res.data)
+            setIsLoading(false)
             })
-            .catch((error) => {
-                if (!(error instanceof CanceledError)) {
-                    setError(error.message)
-                    setIsLoading(false)
-                }
+            .catch((error: Error) => {
+            if (!(error instanceof CanceledError)) {
+                setError(error.message)
+                setIsLoading(false)
+            }
             })
         return abort
     }, [])

@@ -4,10 +4,12 @@ import apiClient, { CanceledError } from "./api-client"
 export { CanceledError }
 
 export interface Post {
-    _id: string,
-    title: string,
-    content: string,
-    sender: string
+    _id: number
+    sender: string;
+    content: string;
+    createdAt: string;
+    likes: number;
+    photos: string[];
 }
 
 const getAllPosts = () => {

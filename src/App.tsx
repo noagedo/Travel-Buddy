@@ -5,23 +5,25 @@ import { BrowserRouter as Router, Routes, Route } from 'react-router-dom';
 import SignUp from './components/SignUp';
 import SignIn from './components/SignIn';
 
-import Posts from './components/PostsList';
-import PersonalArea from './components/PersonalArea';
-//import SignUp from './components/SignUp';
-//import Post from './components/Post';
+// import PersonalArea from './components/PersonalArea';
 import AddPost from './components/AddPost';
+import PostsList from './components/PostsList';
+
 
 
 const App: React.FC = () => {
+  
+
+  
   return (
     <Router>
-      <NavBar /> {/* מציג את ה-navbar בכל עמוד */}
+      <NavBar /> {}
       <Routes>
         <Route path="/" element={<HomeBeforeSignIn />} />
         <Route path="/sign-up" element={<SignUp />} />
         <Route path="/sign-in" element={<SignIn />} />
-        <Route path="/posts" element={<Posts />} />
-        <Route path="/personal-area" element={<PersonalArea />} />
+        <Route path="/posts" element={<PostsList />} />
+      
         <Route path="/add-post" element={<AddPost />} />
       </Routes>
     </Router>
