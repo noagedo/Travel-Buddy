@@ -3,7 +3,7 @@ import { Card, CardContent, Typography, Box, Avatar, IconButton } from "@mui/mat
 import FavoriteIcon from "@mui/icons-material/Favorite";
 
 interface ItemsListProps {
-  _id: number;
+  _id: string;
   sender: string;
   content: string;
   createdAt: string;
@@ -12,12 +12,12 @@ interface ItemsListProps {
   onItemSelected: (index: number) => void;
 }
 
-const ItemsList: FC<ItemsListProps> = ({ _id, sender, content, createdAt, likes, photos, onItemSelected }) => {
+const ItemsList: FC<ItemsListProps> = ({ sender, content, createdAt, likes, photos,  }) => {
   const [selected, setSelected] = useState<boolean>(false);
 
   const handleSelect = () => {
     setSelected(!selected);
-    onItemSelected(_id);
+  
   };
 
   return (
