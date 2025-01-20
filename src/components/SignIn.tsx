@@ -1,14 +1,26 @@
-import React from 'react';
-import { Box, Button, TextField, Typography, Stack } from '@mui/material';
-import { useNavigate } from 'react-router-dom'; // ייבוא useNavigate
-import logoGif from '../assets/Animation - 1735911293502.gif'; 
+import React, { useState } from 'react';
+import { Box, Button, TextField, Typography, Stack, Alert } from '@mui/material';
+import { useNavigate } from 'react-router-dom';
+import logoGif from '../assets/Animation - 1735911293502.gif';
+import useUsers from '../hooks/useUsers';
 
 const SignIn: React.FC = () => {
-    const navigate = useNavigate(); // יצירת פונקציה לניווט
-    // פונקציה שתפעיל ניווט לעמוד הבית
-	const handleSignUp = () => {
-		// כאן ניתן להוסיף לוגיקה נוספת אם צריך, למשל ולידציה
-		navigate('/posts'); // נווט לעמוד הבית
+	const navigate = useNavigate();
+	const { signIn, error, isLoading } = useUsers();
+	const [email, setEmail] = useState('');
+	const [password, setPassword] = useState('');
+	const [localLoading, setLocalLoading] = useState(false);
+
+	const handleSignIn = async () => {
+		setLocalLoading(true);
+		await signIn(email, password);
+		setTimeout(() => {
+			setLocalLoading(false);
+			if (!error) {
+				navigate('/posts');
+				window.location.reload();
+			}
+		}, 1000);
 	};
 
 	return (
@@ -17,8 +29,8 @@ const SignIn: React.FC = () => {
 				display: 'flex',
 				justifyContent: 'center',
 				alignItems: 'center',
-				minHeight: '100vh', // גובה מלא של העמוד
-				bgcolor: '#f5f5f5', // אפור בהיר כרקע
+				minHeight: '100vh',
+				bgcolor: '#f5f5f5',
 			}}
 		>
 			<Box
@@ -35,7 +47,6 @@ const SignIn: React.FC = () => {
 					bgcolor: 'background.paper',
 				}}
 			>
-				{/* תצוגת הגיף */}
 				<Box
 					component="img"
 					src={logoGif}
@@ -52,6 +63,8 @@ const SignIn: React.FC = () => {
 						variant="outlined"
 						fullWidth
 						required
+						value={email}
+						onChange={(e) => setEmail(e.target.value)}
 					/>
 					<TextField
 						label="Password"
@@ -59,23 +72,22 @@ const SignIn: React.FC = () => {
 						variant="outlined"
 						fullWidth
 						required
+						value={password}
+						onChange={(e) => setPassword(e.target.value)}
 					/>
-					
-					<Button variant="contained" fullWidth onClick={handleSignUp}>
-                        Sign in
-                    </Button>
-					<Typography align="center" variant="body2">
-						or
-					</Typography>
-					<Button variant="outlined" fullWidth>
-						Sign in with Google
+					{error && <Alert severity="error">{error}</Alert>}
+					<Button
+						variant="contained"
+						fullWidth
+						onClick={handleSignIn}
+						disabled={isLoading || localLoading}
+					>
+						{isLoading || localLoading ? 'Signing in...' : 'Sign in'}
 					</Button>
 				</Stack>
 			</Box>
-			
 		</Box>
 	);
-	
 };
 
 export default SignIn;
