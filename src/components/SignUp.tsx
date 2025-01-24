@@ -22,6 +22,7 @@ const SignUp: React.FC = () => {
   const [selectedImage, setSelectedImage] = useState<File | null>(null);
   const { register, handleSubmit, watch, formState: { errors } } = useForm<FormData>();
   const [img] = watch(["img"])
+  
 
   useEffect(() => {
     if (img && img[0]) {
@@ -42,7 +43,8 @@ const SignUp: React.FC = () => {
 
     await signUp(data.email, data.password, data.userName, selectedImage);
     if (!error) {
-      navigate('/');
+      navigate('/posts');
+      window.location.reload();
     }
   };
 
