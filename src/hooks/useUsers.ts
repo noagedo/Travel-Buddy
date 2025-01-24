@@ -15,42 +15,57 @@ const useUsers = () => {
 
   const signIn = async (email: string, password: string) => {
     setIsLoading(true);
+    setError(null);
     try {
-      const user = await userService.signIn(email, password);
-      setUser(user);
-      localStorage.setItem('user', JSON.stringify(user));
-      setError(null);
-    } catch {
-      setError("Failed to sign in. Please check your credentials.");
+      const { request } = userService.signIn({ email, password, userName: '', avatar: '' });
+      const response = await request;
+      setUser(response.data);
+      localStorage.setItem('user', JSON.stringify(response.data));
+      return { success: true };
+    } catch (err) {
+      const errorMessage = "Email or password is incorrect. Please try again.";
+      setError(errorMessage);
+      console.error(err);
+      return { success: false, error: errorMessage };
     } finally {
       setIsLoading(false);
     }
   };
 
-  const signUp = async (email: string, password: string, userName: string) => {
+  const signUp = async (email: string, password: string, userName: string, avatarFile?: File) => {
     setIsLoading(true);
+    setError(null);
     try {
-      const user = await userService.signUp(email, password, userName);
-      setUser(user);
-      localStorage.setItem('user', JSON.stringify(user));
-      setError(null);
-    } catch  {
+      let avatarUrl = '';
+      
+      // Upload image if provided
+      if (avatarFile) {
+        const { request: imageRequest } = userService.uploadImage(avatarFile);
+        const imageResponse = await imageRequest;
+        avatarUrl = imageResponse.data.url;
+      }
+
+      const { request } = userService.signUp({ 
+        email, 
+        userName,
+        password, 
+        avatar: avatarUrl 
+      });
+      
+      const response = await request;
+      setUser(response.data);
+      localStorage.setItem('user', JSON.stringify(response.data));
+    } catch (err) {
       setError("Failed to sign up. Please try again.");
+      console.error(err);
     } finally {
       setIsLoading(false);
     }
   };
 
-  const signOut = async () => {
-    try {
-      if (user && user.refreshToken) {
-        await userService.logout(user.refreshToken);
-      }
-      setUser(null);
-      localStorage.removeItem('user');
-    } catch{
-      setError("Failed to log out. Please try again.");
-    }
+  const signOut = () => {
+    setUser(null);
+    localStorage.removeItem('user');
   };
 
   return { user, error, isLoading, signIn, signUp, signOut };
