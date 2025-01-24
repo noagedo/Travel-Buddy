@@ -37,18 +37,18 @@ const NavBar: React.FC = () => {
           {user ? (
             <>
               <Typography variant="h6" color="inherit" sx={{ marginRight: 2 }}>
-                {user.userName}
+                Welcome, {user.userName}
               </Typography>
-              <Button color="inherit" onClick={handleLogout} disabled={loading}>
+              <Button color="inherit" onClick={handleLogout} disabled={loading} sx={{ border: '2px solid pink', marginLeft: 2 }}>
                 {loading ? 'Logging out...' : 'Logout'}
               </Button>
             </>
           ) : (
             <>
-              <Button color="inherit" component={Link} to="/sign-in">
+              <Button color="inherit" component={Link} sx={{ border: '2px solid pink', marginLeft: 2 }} to="/sign-in">
                 Sign In
               </Button>
-              <Button color="inherit" component={Link} to="/sign-up">
+              <Button color="inherit" component={Link} sx={{ border: '2px solid pink', marginLeft: 2 }} to="/sign-up">
                 Sign Up
               </Button>
             </>

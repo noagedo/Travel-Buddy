@@ -17,9 +17,11 @@ const useUsers = () => {
     setIsLoading(true);
     setError(null);
     try {
-      const { request } = userService.signIn({ email, password, userName: '', avatar: '' });
+      const { request } = userService.signIn({ email, password});
+      //here I want to search for the userName and the avatar and save it in the local storage
       const response = await request;
       setUser(response.data);
+      console.log(response.data);
       localStorage.setItem('user', JSON.stringify(response.data));
       return { success: true };
     } catch (err) {
@@ -30,6 +32,7 @@ const useUsers = () => {
     } finally {
       setIsLoading(false);
     }
+    
   };
 
   const signUp = async (email: string, password: string, userName: string, avatarFile?: File) => {
@@ -38,7 +41,7 @@ const useUsers = () => {
     try {
       let avatarUrl = '';
       
-      // Upload image if provided
+      
       if (avatarFile) {
         const { request: imageRequest } = userService.uploadImage(avatarFile);
         const imageResponse = await imageRequest;

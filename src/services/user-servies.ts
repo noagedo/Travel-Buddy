@@ -19,13 +19,11 @@ const signUp = (user: User) => {
     return { request, abort: () => abortController.abort() }
 }
 
-const signIn = (user:User) => {
-    const abortController = new AbortController()
-    const request = apiClient.post<User>('/auth/login',
-        user,
-        { signal: abortController.signal })
-    return { request, abort: () => abortController.abort() }
-}
+const signIn = (user: { email: string; password: string }) => {
+    const abortController = new AbortController();
+    const request = apiClient.post<User>('/auth/login', user, { signal: abortController.signal });
+    return { request, abort: () => abortController.abort() };
+  };
 
 const uploadImage = (img: File) => {
     // const abortController = new AbortController()

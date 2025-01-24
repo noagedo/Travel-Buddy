@@ -21,7 +21,8 @@ const SignIn: React.FC = () => {
 	try {
 		const result = await signIn(data.email, data.password);
 		if (result.success) {
-		  navigate('/'); 
+		  navigate('/posts'); 
+      
 		} else {
 		  setSignInError(result.error || 'Invalid email or password. Please try again.');
 		}
