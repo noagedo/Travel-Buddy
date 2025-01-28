@@ -1,6 +1,6 @@
 import { FC, useState } from "react";
-import postService, { Post } from "../services/post-servies";
-import { User } from "../services/user-servies";
+import postService, { Post } from "../services/post-service";
+import { User } from "../services/user-service";
 import {
   Box,
   Button,

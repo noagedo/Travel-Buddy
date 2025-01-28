@@ -1,5 +1,5 @@
 import { useState, useEffect } from "react";
-import userService, { User } from "../services/user-servies";
+import userService, { User } from "../services/user-service";
 
 const useUsers = () => {
   const [user, setUser] = useState<User | null>(null);
@@ -18,7 +18,6 @@ const useUsers = () => {
     setError(null);
     try {
       const { request } = userService.signIn({ email, password});
-      //here I want to search for the userName and the avatar and save it in the local storage
       const response = await request;
       setUser(response.data);
       console.log(response.data);

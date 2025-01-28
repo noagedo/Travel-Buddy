@@ -45,4 +45,7 @@ const update = (user: User) => {
   };
 
 
+
 export default { signUp,signIn, uploadImage, update }
+
+
