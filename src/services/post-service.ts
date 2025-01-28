@@ -13,6 +13,7 @@ export interface Post {
     likesBy: string[];
     photos: string[];
     
+
 }
 
 const postService = createHttpService<Post>("/posts");

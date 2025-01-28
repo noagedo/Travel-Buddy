@@ -9,6 +9,7 @@ export interface User {
     email: string,
     password: string,
     profilePicture?: string
+
 }
   
 const signUp = (user: User) => {
@@ -36,6 +37,7 @@ const uploadImage = (img: File) => {
     })
     return { request }
 }
+
 
 
 const update = (user: User) => {
