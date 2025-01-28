@@ -10,7 +10,10 @@ export interface Post {
     content: string;
     createdAt: string;
     likes: number;
+    likesBy: string[];
     photos: string[];
+    
+
 }
 
 const postService = createHttpService<Post>("/posts");

@@ -1,119 +1,98 @@
-import React, { useState } from 'react';
-import { Box, TextField, Button, Typography, Stack } from '@mui/material';
+import { FC, useState } from "react";
+import postService, { Post } from "../services/post-service";
+import { User } from "../services/user-service";
+import {
+  Box,
+  Button,
+  TextField,
+  Typography,
+  Alert,
+  Stack,
+} from "@mui/material";
+import logoGif from "../assets/Travel Map.mp4";
 
-const AddPost: React.FC = () => {
-	const [images, setImages] = useState<string[]>([]);
-	const [subheader, setSubheader] = useState('');
-	const [content, setContent] = useState('');
+interface AddPostProps {
+  user: User;
+}
 
-	// פונקציה להוספת תמונה מהמחשב
-	const handleFileUpload = (event: React.ChangeEvent<HTMLInputElement>) => {
-		const files = event.target.files;
-		if (files) {
-			const newImages: string[] = [];
-			Array.from(files).forEach((file) => {
-				const reader = new FileReader();
-				reader.onload = () => {
-					if (reader.result) {
-						newImages.push(reader.result.toString());
-						// לאחר שנטענו את כל הקבצים, נוסיף אותם לסטייט
-						if (newImages.length === files.length) {
-							setImages((prevImages) => [...prevImages, ...newImages]);
-						}
-					}
-				};
-				reader.readAsDataURL(file);
-			});
-		}
-	};
+const AddPost: FC<AddPostProps> = ({ user }) => {
+  const [content, setContent] = useState("");
+  const [photos, setPhotos] = useState<string[]>([]);
+  const [error, setError] = useState<string | null>(null);
+  const [successMessage, setSuccessMessage] = useState<string | null>(null);
 
-	// פונקציית שליחת הטופס
-	const handleSubmit = () => {
-		const post = {
-			images,
-			subheader,
-			content,
-		};
-		console.log('New Post:', post);
-		alert('Post submitted!');
-	};
+  const handleSubmit = async (e: React.FormEvent) => {
+    e.preventDefault();
+    setError(null);
+    setSuccessMessage(null);
 
-	return (
-		<Box
-			sx={{
-				maxWidth: 500,
-				margin: 'auto',
-				padding: 4,
-				boxShadow: 3,
-				borderRadius: 2,
-				bgcolor: 'background.paper',
-			}}
-		>
-			<Typography variant="h4" component="h1" gutterBottom align="center">
-				Add New Post
-			</Typography>
-			<Stack spacing={2}>
-				{/* Subheader */}
-				<TextField
-					label="Subheader"
-					variant="outlined"
-					fullWidth
-					value={subheader}
-					onChange={(e) => setSubheader(e.target.value)}
-				/>
+    const newPost: Omit<Post, "_id" | "createdAt" | "likes" | "likesBy"> = {
+      sender: user.userName,
+      content,
+      photos,
+    };
 
-				{/* תוכן */}
-				<TextField
-					label="Content"
-					variant="outlined"
-					fullWidth
-					multiline
-					rows={4}
-					value={content}
-					onChange={(e) => setContent(e.target.value)}
-				/>
+    try {
+      await postService.add(newPost as Post);
+      setSuccessMessage("Post added successfully!");
+      setContent("");
+      setPhotos([]);
+    } catch (err) {
+      console.error("Error adding post:", err);
+      setError("An error occurred while adding the post. Please try again.");
+    }
+  };
 
-				{/* העלאת תמונות */}
-				<Button variant="outlined" component="label">
-					Upload Images
-					<input
-						type="file"
-						multiple
-						accept="image/*"
-						hidden
-						onChange={handleFileUpload}
-					/>
-				</Button>
+  return (
+    <>
+      <br />
+      <Box
+        maxWidth="sm"
+        mx="auto"
+        p={4}
+        boxShadow={3}
+        borderRadius={2}
+        bgcolor="background.paper"
+      >
+        <Box
+          sx={{ width: 150, height: 150, marginBottom: 2 }}
+        >
+          <video
+            src={logoGif}
+            style={{ width: "100%", height: "100%" }}
+            autoPlay
+            loop
+            muted
+          />
+        </Box>
+        <Typography variant="h5" fontWeight="bold" mb={2}>
+          Add New Post
+        </Typography>
 
-				{/* תצוגת תמונות שהועלו */}
-				<Box>
-					<Typography variant="body1">Uploaded Images:</Typography>
-					{images.map((image, index) => (
-						<Box key={index} sx={{ display: 'flex', alignItems: 'center', mb: 1 }}>
-							<img
-								src={image}
-								alt={`Uploaded Image ${index + 1}`}
-								style={{ width: '50px', height: '50px', marginRight: '10px' }}
-							/>
-							<Button
-								variant="outlined"
-								color="error"
-								size="small"
-								onClick={() => setImages(images.filter((_, i) => i !== index))}
-							>
-								Remove
-							</Button>
-						</Box>
-					))}
-				</Box>
+        <Stack spacing={2}>
+          {error && <Alert severity="error">{error}</Alert>}
+          {successMessage && <Alert severity="success">{successMessage}</Alert>}
+        </Stack>
 
-				{/* כפתור שליחה */}
-				<Button variant="contained" color="primary" onClick={handleSubmit}>
-					Submit Post
-				</Button>
-			</Stack>
-		</Box>
-	);
+        <form onSubmit={handleSubmit}>
+          <Stack spacing={3} mt={2}>
+            <TextField
+              id="content"
+              label="Content"
+              value={content}
+              onChange={(e) => setContent(e.target.value)}
+              fullWidth
+              multiline
+              rows={4}
+            />
+            <Button variant="contained" color="primary" type="submit">
+              Submit
+            </Button>
+          </Stack>
+        </form>
+      </Box>
+    </>
+  );
 };
 
 export default AddPost;

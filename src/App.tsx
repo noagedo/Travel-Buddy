@@ -5,14 +5,14 @@ import { BrowserRouter as Router, Routes, Route } from 'react-router-dom';
 import SignUp from './components/SignUp';
 import SignIn from './components/SignIn';
 
-// import PersonalArea from './components/PersonalArea';
+import PersonalArea from './components/PersonalArea';
 import AddPost from './components/AddPost';
 import PostsList from './components/PostsList';
-
+import useUsers from './hooks/useUsers';
 
 
 const App: React.FC = () => {
-  
+  const { user } = useUsers();
 
   
   return (
@@ -23,8 +23,8 @@ const App: React.FC = () => {
         <Route path="/sign-up" element={<SignUp />} />
         <Route path="/sign-in" element={<SignIn />} />
         <Route path="/posts" element={<PostsList />} />
-  
-        <Route path="/add-post" element={<AddPost />} />
+        <Route path="/personal-area" element={user ? <PersonalArea user={user} /> : <SignIn />} />
+        <Route path="/add-post" element={user ? <AddPost user={user} /> : <SignIn />} />
       </Routes>
     </Router>
   );

@@ -22,7 +22,7 @@ const SignIn: React.FC = () => {
 		const result = await signIn(data.email, data.password);
 		if (result.success) {
 		  navigate('/posts'); 
-      
+      window.location.reload();
 		} else {
 		  setSignInError(result.error || 'Invalid email or password. Please try again.');
 		}

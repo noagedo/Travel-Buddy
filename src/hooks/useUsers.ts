@@ -51,7 +51,7 @@ const useUsers = () => {
         email, 
         userName,
         password, 
-        avatar: avatarUrl 
+        profilePicture: avatarUrl 
       });
       
       const response = await request;
@@ -70,7 +70,29 @@ const useUsers = () => {
     localStorage.removeItem('user');
   };
 
-  return { user, error, isLoading, signIn, signUp, signOut };
+
+
+  const updateUser = async (updatedUser: User) => {
+    setIsLoading(true);
+    setError(null);
+    try {
+      const { request } = userService.update(updatedUser);
+      const response = await request;
+      setUser(response.data);
+      localStorage.setItem('user', JSON.stringify(response.data));
+      return { success: true };
+    } catch (err) {
+      const errorMessage = "Failed to update user details. Please try again.";
+      setError(errorMessage);
+      console.error(err);
+      return { success: false, error: errorMessage };
+    } finally {
+      setIsLoading(false);
+    }
+  };
+
+
+  return { user, error, isLoading, signIn, signUp, signOut, updateUser };
 };
 
 export default useUsers;

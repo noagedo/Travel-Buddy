@@ -8,7 +8,8 @@ export interface User {
     userName: string;
     email: string,
     password: string,
-    avatar?: string
+    profilePicture?: string
+
 }
   
 const signUp = (user: User) => {
@@ -39,4 +40,14 @@ const uploadImage = (img: File) => {
 
 
 
-export default { signUp,signIn, uploadImage }
+const update = (user: User) => {
+    const abortController = new AbortController();
+    const request = apiClient.put<User>(`/auth/${user._id}`, user, { signal: abortController.signal });
+    return { request, abort: () => abortController.abort() };
+  };
+
+
+
+export default { signUp,signIn, uploadImage, update }
+
+
