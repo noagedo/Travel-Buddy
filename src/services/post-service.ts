@@ -1,5 +1,5 @@
 import  { CanceledError } from "./api-client"
-import createHttpService from "./http-servies"
+import createHttpService from "./http-service"
 
 
 export { CanceledError }

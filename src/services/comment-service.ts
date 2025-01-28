@@ -1,5 +1,5 @@
-
-import createHttpService, { CanceledError } from "./api-client"
+import  { CanceledError } from "./api-client"
+import createHttpService from "./http-service"
 
 export { CanceledError }
 
@@ -8,6 +8,8 @@ export interface Comment {
     sender : string;
     content : string;
     createdAt : string;
+    _id : string;
+    
 }
 
 

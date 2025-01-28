@@ -39,5 +39,4 @@ const uploadImage = (img: File) => {
 
 
 
-
 export default { signUp,signIn, uploadImage }

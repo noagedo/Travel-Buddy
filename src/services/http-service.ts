@@ -18,6 +18,7 @@ class HttpService<T extends BaseEntity>{
         return { request, cancel: ()=>controller.abort()};
     }
 
+
     add(data: T){
         const controller = new AbortController();
         const request = apiClient.post(this.endpoint, data, {signal: controller.signal});
