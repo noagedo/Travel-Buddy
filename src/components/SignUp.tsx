@@ -1,7 +1,8 @@
 import React, { useState, useRef, useEffect } from 'react';
-import { useNavigate } from 'react-router-dom';
+import {  useNavigate } from 'react-router-dom';
 import useUsers from '../hooks/useUsers';
 import { Box, Button, TextField, Typography, Alert } from '@mui/material';
+// import userService from '../services/user-servies'; // Adjust the import path as necessary
 import avatar from '../assets/avatarProfile.png';
 import { FontAwesomeIcon } from '@fortawesome/react-fontawesome';
 import { faImage } from '@fortawesome/free-solid-svg-icons';
@@ -46,6 +47,23 @@ const SignUp: React.FC = () => {
       navigate('/posts');
       window.location.reload();
     }
+
+    // const imgURL = ""
+    // const regData = FormData = {
+    //   email: data.email,
+    //   userName: data.userName,
+    //   password: data.password,
+    //   img: imgURL
+    // }
+    // const {request} = userService.signUp(regData)
+    // request.then((response) => {
+    //   console.log(response.data)
+    //   localStorage.setItem('user', JSON.stringify(response.data))
+    //   navigate('/posts')
+    //   window.location.reload()
+    // }).catch((error) => {
+    //   console.error(error)
+    // )}
   };
 
   const { ref, ...restRegisterParams } = register("img")
