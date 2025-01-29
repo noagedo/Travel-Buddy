@@ -1,9 +1,9 @@
 import { useEffect, useState } from "react";
-import commentService, {CanceledError, Comment } from "../services/comment-service";
-
+import commentService, { Comment } from "../services/comment-service";
+import { CanceledError } from "../services/api-client"; // Correct import
 
 const useComments = (postId: string) => {
-  const [comments, setComments] = useState<Comment[]>([]);
+  const [comments, setComments] = useState<string[]>([]);
   const [error, setError] = useState<string | undefined>();
   const [isLoading, setIsLoading] = useState(false);
 
@@ -12,7 +12,7 @@ const useComments = (postId: string) => {
     const { request, cancel } = commentService.get(postId);
     request
       .then((res: { data: Comment[] }) => {
-        setComments(res.data); // expects data to be an array of Comment[]
+        setComments(res.data.map(comment => comment.content)); // expects data to be an array of Comment[]
         setIsLoading(false);
       })
       .catch((err: unknown) => {

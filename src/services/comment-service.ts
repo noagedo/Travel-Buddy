@@ -1,17 +1,13 @@
-import  { CanceledError } from "./api-client"
-import createHttpService from "./http-service"
-
-export { CanceledError }
+import createHttpService from "./http-service";
 
 export interface Comment {
-    postId : string;
-    sender : string;
-    content : string;
-    createdAt : string;
-    _id : string;
-    
+  _id: string;
+  postId: string;
+  userId: string;
+  sender: string;
+  content: string;
+  createdAt: string;
 }
-
 
 const commentService = createHttpService<Comment>("/comments");
 
