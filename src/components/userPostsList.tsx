@@ -1,6 +1,6 @@
 import { FC } from "react";
 import ItemsList from "./ItemsList";
-import { Post } from "../services/post-servies";
+import { Post } from "../services/post-service";
 
 interface UserPostsListProps {
   posts: Post[];
@@ -23,6 +23,7 @@ const UserPostsList: FC<UserPostsListProps> = ({ posts, isLoading, error }) => {
           content={post.content}
           createdAt={post.createdAt}
           likes={post.likes}
+          likesBy={post.likesBy}
           photos={post.photos}
           onItemSelected={(id) => console.log("Selected Post ID:", id)}
         />
