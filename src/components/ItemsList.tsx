@@ -1,4 +1,4 @@
-import { FC, useState} from "react";
+import { FC, useState } from "react";
 import {
   Card,
   CardContent,
@@ -20,6 +20,8 @@ import CommentIcon from "@mui/icons-material/Comment";
 import ArrowBackIcon from "@mui/icons-material/ArrowBack";
 import postService from "../services/post-service";
 import { User } from "../services/user-service"; // Assuming you have a User interface
+import commentService from "../services/comment-service"; // Import comment service
+import useComments from "../hooks/useComments"; // Import useComments hook
 
 interface ItemsListProps {
   _id: string;
@@ -38,7 +40,7 @@ const ItemsList: FC<ItemsListProps> = ({ _id, sender, content, createdAt, likes,
   const [currentLikes, setCurrentLikes] = useState(likes);
   const [showComments, setShowComments] = useState(false);
   const [newComment, setNewComment] = useState("");
-  const [comments, setComments] = useState<string[]>([]);
+  const { comments, setComments, isLoading, error } = useComments(_id); // Use useComments hook
 
   const handleLike = async () => {
     if (!user) return; // Ensure user is defined
@@ -75,10 +77,23 @@ const ItemsList: FC<ItemsListProps> = ({ _id, sender, content, createdAt, likes,
     setShowComments(false);
   };
 
-  const handleAddComment = () => {
+  const handleAddComment = async () => {
     if (newComment.trim() !== "") {
-      setComments([...comments, newComment]);
-      setNewComment("");
+      try {
+        const comment = {
+          postId: _id,
+          userId: user?._id || "", // Ensure user ID is provided
+          sender: user?.userName || "", // Ensure sender name is provided
+          content: newComment,
+          createdAt: new Date().toISOString(),
+        };
+        const { request } = commentService.add(comment); // Save the comment to the database
+        const response = await request;
+        setComments([...comments, response.data.content]); // Add the new comment content to the state
+        setNewComment("");
+      } catch (err) {
+        console.error("Error adding comment:", err);
+      }
     }
   };
 
@@ -161,6 +176,8 @@ const ItemsList: FC<ItemsListProps> = ({ _id, sender, content, createdAt, likes,
                 Add
               </Button>
             </Stack>
+            {isLoading && <p>Loading comments...</p>}
+            {error && <p>{error}</p>}
             <List>
               {comments.map((comment, index) => (
                 <ListItem key={index}>

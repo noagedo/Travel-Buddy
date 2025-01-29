@@ -18,11 +18,10 @@ class HttpService<T extends BaseEntity>{
         return { request, cancel: ()=>controller.abort()};
     }
 
-
-    add(data: T){
+    add(data: Omit<T, '_id'>) {
         const controller = new AbortController();
-        const request = apiClient.post(this.endpoint, data, {signal: controller.signal});
-        return { request, cancel: ()=>controller.abort()};
+        const request = apiClient.post(this.endpoint, data, { signal: controller.signal });
+        return { request, cancel: () => controller.abort() };
     }
 
     update(data: T){
@@ -46,7 +45,5 @@ class HttpService<T extends BaseEntity>{
 }
 
 const createHttpService = <T extends BaseEntity>(endpoint: string) => new HttpService<T>(endpoint);
-
-
 
 export default createHttpService;
