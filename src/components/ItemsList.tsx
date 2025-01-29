@@ -1,4 +1,4 @@
-import { FC, useState } from "react";
+import { FC, useState} from "react";
 import {
   Card,
   CardContent,
@@ -18,6 +18,8 @@ import FavoriteIcon from "@mui/icons-material/Favorite";
 import MoreVertIcon from "@mui/icons-material/MoreVert";
 import CommentIcon from "@mui/icons-material/Comment";
 import ArrowBackIcon from "@mui/icons-material/ArrowBack";
+import postService from "../services/post-service";
+import { User } from "../services/user-service"; // Assuming you have a User interface
 
 interface ItemsListProps {
   _id: string;
@@ -25,18 +27,44 @@ interface ItemsListProps {
   content: string;
   createdAt: string;
   likes: number;
+  likesBy: string[];
   photos: string[];
   onItemSelected: (index: number) => void;
+  user?: User; // Add the logged-in user prop
 }
 
-const ItemsList: FC<ItemsListProps> = ({ sender, content, createdAt, likes, photos }) => {
-  const [isLiked, setIsLiked] = useState(false);
+const ItemsList: FC<ItemsListProps> = ({ _id, sender, content, createdAt, likes, likesBy, photos, user }) => {
+  const [isLiked, setIsLiked] = useState(user && user._id ? likesBy.includes(user._id) : false);
+  const [currentLikes, setCurrentLikes] = useState(likes);
   const [showComments, setShowComments] = useState(false);
   const [newComment, setNewComment] = useState("");
   const [comments, setComments] = useState<string[]>([]);
 
-  const handleLike = () => {
+  const handleLike = async () => {
+    if (!user) return; // Ensure user is defined
+
+    const newLikes = isLiked ? currentLikes - 1 : currentLikes + 1;
+    const newLikesBy = isLiked ? likesBy.filter(id => id !== user._id) : [...likesBy, user._id!];
+
     setIsLiked(!isLiked);
+    setCurrentLikes(newLikes);
+
+    try {
+      await postService.update({
+        _id,
+        sender,
+        content,
+        createdAt,
+        likes: newLikes,
+        likesBy: newLikesBy,
+        photos,
+      });
+    } catch (err) {
+      console.error("Error updating likes:", err);
+      // Revert the state if the update fails
+      setIsLiked(isLiked);
+      setCurrentLikes(isLiked ? currentLikes - 1 : currentLikes + 1);
+    }
   };
 
   const handleViewComments = () => {
@@ -80,7 +108,7 @@ const ItemsList: FC<ItemsListProps> = ({ sender, content, createdAt, likes, phot
             <FavoriteIcon sx={{ color: isLiked ? "red" : "gray" }} />
           </IconButton>
           <Typography variant="body2" sx={{ marginLeft: 1 }}>
-            {isLiked ? likes + 1 : likes} {likes + (isLiked ? 1 : 0) === 1 ? "Like" : "Likes"}
+            {currentLikes} {currentLikes === 1 ? "Like" : "Likes"}
           </Typography>
         </Box>
 

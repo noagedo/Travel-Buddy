@@ -2,9 +2,9 @@ import { FC, useState, useEffect } from "react";
 import { Avatar, Box, Typography, TextField, Button } from "@mui/material";
 import usePosts from "../hooks/usePosts";
 import useUsers from "../hooks/useUsers";
-import UserPostsList from "./UserPostsList";
-import { User } from "../services/user-servies";
-import { Post } from "../services/post-servies";
+import UserPostsList from "./userPostsList";
+import { User } from "../services/user-service";
+import { Post } from "../services/post-service";
 interface PersonalAreaProps {
   user: User;
 }
