@@ -1,4 +1,4 @@
-import { FC, useState } from "react";
+import React, { FC, useState } from "react";
 import {
   Card,
   CardContent,
@@ -13,6 +13,14 @@ import {
   List,
   ListItem,
   ListItemText,
+  ListItemAvatar,
+  Menu,
+  MenuItem,
+  Dialog,
+  DialogActions,
+  DialogContent,
+  DialogContentText,
+  DialogTitle,
 } from "@mui/material";
 import FavoriteIcon from "@mui/icons-material/Favorite";
 import MoreVertIcon from "@mui/icons-material/MoreVert";
@@ -32,15 +40,19 @@ interface ItemsListProps {
   likesBy: string[];
   photos: string[];
   onItemSelected: (index: number) => void;
-  user?: User; // Add the logged-in user prop
+  user?: User; 
+  onEditPost?: (postId: string) => void; // Make onEditPost prop optional
+  onDeletePost?: (postId: string) => void; // Make onDeletePost prop optional
 }
 
-const ItemsList: FC<ItemsListProps> = ({ _id, sender, content, createdAt, likes, likesBy, photos, user }) => {
+const ItemsList: FC<ItemsListProps> = ({ _id, sender, content, createdAt, likes, likesBy, photos, user, onEditPost, onDeletePost }) => {
   const [isLiked, setIsLiked] = useState(user && user._id ? likesBy.includes(user._id) : false);
   const [currentLikes, setCurrentLikes] = useState(likes);
   const [showComments, setShowComments] = useState(false);
   const [newComment, setNewComment] = useState("");
   const { comments, setComments, isLoading, error } = useComments(_id); // Use useComments hook
+  const [anchorEl, setAnchorEl] = useState<null | HTMLElement>(null);
+  const [openConfirmDialog, setOpenConfirmDialog] = useState(false);
 
   const handleLike = async () => {
     if (!user) return; // Ensure user is defined
@@ -82,14 +94,15 @@ const ItemsList: FC<ItemsListProps> = ({ _id, sender, content, createdAt, likes,
       try {
         const comment = {
           postId: _id,
-          userId: user?._id || "", // Ensure user ID is provided
-          sender: user?.userName || "", // Ensure sender name is provided
+          userId: user?._id || "", 
+          profilePicture: user?.profilePicture || "",
+          sender: user?.userName || "", 
           content: newComment,
           createdAt: new Date().toISOString(),
         };
-        const { request } = commentService.add(comment); // Save the comment to the database
+        const { request } = commentService.add(comment); 
         const response = await request;
-        setComments([...comments, response.data.content]); // Add the new comment content to the state
+        setComments([...comments, response.data]); // Add the new comment object to the state
         setNewComment("");
       } catch (err) {
         console.error("Error adding comment:", err);
@@ -97,27 +110,69 @@ const ItemsList: FC<ItemsListProps> = ({ _id, sender, content, createdAt, likes,
     }
   };
 
+  const handleMenuOpen = (event: React.MouseEvent<HTMLElement>) => {
+    setAnchorEl(event.currentTarget);
+  };
+
+  const handleMenuClose = () => {
+    setAnchorEl(null);
+  };
+
+  const handleEditPost = () => {
+    if (onEditPost) {
+      onEditPost(_id);
+    }
+    handleMenuClose();
+  };
+
+  const handleDeletePost = () => {
+    setOpenConfirmDialog(true);
+    handleMenuClose();
+  };
+
+  const handleConfirmDelete = () => {
+    if (onDeletePost) {
+      onDeletePost(_id);
+    }
+    setOpenConfirmDialog(false);
+  };
+
+  const handleCancelDelete = () => {
+    setOpenConfirmDialog(false);
+  };
+
   return (
     <Card sx={{ maxWidth: 600, margin: "auto", boxShadow: 3, borderRadius: 2, marginBottom: 2 }}>
-      {/* Header with avatar and sender info */}
+      
       <CardHeader
         avatar={<Avatar>{sender.charAt(0).toUpperCase()}</Avatar>}
         action={
-          <IconButton>
-            <MoreVertIcon />
-          </IconButton>
+          user && user.userName === sender && onEditPost && onDeletePost && (
+            <>
+              <IconButton onClick={handleMenuOpen}>
+                <MoreVertIcon />
+              </IconButton>
+              <Menu
+                anchorEl={anchorEl}
+                open={Boolean(anchorEl)}
+                onClose={handleMenuClose}
+              >
+                <MenuItem onClick={handleEditPost}>Edit</MenuItem>
+                <MenuItem onClick={handleDeletePost}>Delete</MenuItem>
+              </Menu>
+            </>
+          )
         }
         title={sender}
         subheader={new Date(createdAt).toLocaleString()}
       />
 
       <CardContent>
-        {/* Content */}
+        
         <Typography variant="body2" color="text.secondary" gutterBottom>
           {content}
         </Typography>
 
-        {/* Like Button and Like Count */}
         <Box sx={{ display: "flex", alignItems: "center", marginBottom: 2 }}>
           <IconButton onClick={handleLike}>
             <FavoriteIcon sx={{ color: isLiked ? "red" : "gray" }} />
@@ -138,7 +193,7 @@ const ItemsList: FC<ItemsListProps> = ({ _id, sender, content, createdAt, likes,
           </Button>
         </Box>
 
-        {/* Display Images or Comments */}
+        
         {!showComments ? (
           <Box
             sx={{
@@ -180,14 +235,59 @@ const ItemsList: FC<ItemsListProps> = ({ _id, sender, content, createdAt, likes,
             {error && <p>{error}</p>}
             <List>
               {comments.map((comment, index) => (
-                <ListItem key={index}>
-                  <ListItemText primary={comment} />
-                </ListItem>
+                <ListItem key={index} alignItems="flex-start">
+                <ListItemAvatar>
+                  <Avatar alt={comment.sender} src={user?.profilePicture} />
+                </ListItemAvatar>
+                <ListItemText
+                  primary={
+                    <React.Fragment>
+                      <Typography
+                        sx={{ display: 'inline' }}
+                        component="span"
+                        variant="body2"
+                        color="text.primary"
+                      >
+                        {comment.sender}
+                      </Typography>
+                      <br />
+                      <Typography
+                        sx={{ wordWrap: 'break-word' }}
+                        component="span"
+                        variant="body2"
+                        color="text.secondary"
+                      >
+                        {comment.content}
+                      </Typography>
+                    </React.Fragment>
+                  }
+                />
+              </ListItem>
               ))}
             </List>
           </Box>
         )}
       </CardContent>
+
+      <Dialog
+        open={openConfirmDialog}
+        onClose={handleCancelDelete}
+      >
+        <DialogTitle>Confirm Delete</DialogTitle>
+        <DialogContent>
+          <DialogContentText>
+            Are you sure you want to delete this post? This action cannot be undone.
+          </DialogContentText>
+        </DialogContent>
+        <DialogActions>
+          <Button onClick={handleCancelDelete} color="primary">
+            Cancel
+          </Button>
+          <Button onClick={handleConfirmDelete} color="primary">
+            Delete
+          </Button>
+        </DialogActions>
+      </Dialog>
     </Card>
   );
 };

@@ -2,8 +2,15 @@ import { useEffect, useState } from "react";
 import commentService, { Comment } from "../services/comment-service";
 import { CanceledError } from "../services/api-client"; // Correct import
 
+interface CommentWithUser extends Comment {
+  user: {
+    userName: string;
+    profilePicture: string;
+  };
+}
+
 const useComments = (postId: string) => {
-  const [comments, setComments] = useState<string[]>([]);
+  const [comments, setComments] = useState<CommentWithUser[]>([]);
   const [error, setError] = useState<string | undefined>();
   const [isLoading, setIsLoading] = useState(false);
 
@@ -11,8 +18,8 @@ const useComments = (postId: string) => {
     setIsLoading(true);
     const { request, cancel } = commentService.get(postId);
     request
-      .then((res: { data: Comment[] }) => {
-        setComments(res.data.map(comment => comment.content)); // expects data to be an array of Comment[]
+      .then((res: { data: CommentWithUser[] }) => {
+        setComments(res.data); 
         setIsLoading(false);
       })
       .catch((err: unknown) => {
