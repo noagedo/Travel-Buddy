@@ -27,18 +27,15 @@ const signIn = (user: { email: string; password: string }) => {
   };
 
 const uploadImage = (img: File) => {
-    // const abortController = new AbortController()
     const formData = new FormData();
     formData.append("file", img);
     const request = apiClient.post('/file?file=' + img.name, formData, {
         headers: {
-            'Content-Type': 'image/*'
+            'Content-Type': 'multipart/form-data'
         }
-    })
-    return { request }
+    });
+    return { request };
 }
-
-
 
 const update = (user: User) => {
     const abortController = new AbortController();

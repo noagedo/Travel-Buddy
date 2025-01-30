@@ -1,19 +1,19 @@
 import React, { useState, useRef, useEffect } from 'react';
-import {  useNavigate } from 'react-router-dom';
+import { useNavigate } from 'react-router-dom';
 import useUsers from '../hooks/useUsers';
 import { Box, Button, TextField, Typography, Alert } from '@mui/material';
-// import userService from '../services/user-servies'; // Adjust the import path as necessary
 import avatar from '../assets/avatarProfile.png';
 import { FontAwesomeIcon } from '@fortawesome/react-fontawesome';
 import { faImage } from '@fortawesome/free-solid-svg-icons';
 import { useForm } from 'react-hook-form';
 import logoGif from '../assets/Animation - 1735911293502.gif';
+import userService from '../services/user-service'; // Import user service
 
 interface FormData {
-  email: string
-  userName: string
-  password: string
-  img: File[]
+  email: string;
+  userName: string;
+  password: string;
+  img: File[];
 }
 
 const SignUp: React.FC = () => {
@@ -22,8 +22,7 @@ const SignUp: React.FC = () => {
   const inputFileRef = useRef<HTMLInputElement | null>(null);
   const [selectedImage, setSelectedImage] = useState<File | null>(null);
   const { register, handleSubmit, watch, formState: { errors } } = useForm<FormData>();
-  const [img] = watch(["img"])
-  
+  const [img] = watch(["img"]);
 
   useEffect(() => {
     if (img && img[0]) {
@@ -42,31 +41,24 @@ const SignUp: React.FC = () => {
       return;
     }
 
-    await signUp(data.email, data.password, data.userName, selectedImage);
-    if (!error) {
-      navigate('/posts');
-      window.location.reload();
-    }
+    try {
+      // Upload the image
+      const { request: uploadRequest } = userService.uploadImage(selectedImage);
+      const uploadResponse = await uploadRequest;
+      const imageUrl = uploadResponse.data.url; // Assuming the server returns the URL of the uploaded image
 
-    // const imgURL = ""
-    // const regData = FormData = {
-    //   email: data.email,
-    //   userName: data.userName,
-    //   password: data.password,
-    //   img: imgURL
-    // }
-    // const {request} = userService.signUp(regData)
-    // request.then((response) => {
-    //   console.log(response.data)
-    //   localStorage.setItem('user', JSON.stringify(response.data))
-    //   navigate('/posts')
-    //   window.location.reload()
-    // }).catch((error) => {
-    //   console.error(error)
-    // )}
+      // Sign up the user with the image URL
+      await signUp(data.email, data.password, data.userName, imageUrl);
+      if (!error) {
+        navigate('/posts');
+        window.location.reload();
+      }
+    } catch (err) {
+      console.error("Error during sign up:", err);
+    }
   };
 
-  const { ref, ...restRegisterParams } = register("img")
+  const { ref, ...restRegisterParams } = register("img");
 
   return (
     <Box
