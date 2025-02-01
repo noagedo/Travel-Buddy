@@ -1,6 +1,6 @@
 import { useState } from "react";
-import postService, { CanceledError } from "../services/post-servies";
-import { Post } from "../services/post-servies";
+import postService, { CanceledError } from "../services/post-service";
+import { Post } from "../services/post-service";
 
 const useAddPost = () => {
   const [isLoading, setIsLoading] = useState(false);

@@ -4,6 +4,8 @@ import useUsers from '../hooks/useUsers';
 import { Box, Button, TextField, Typography, Alert } from '@mui/material';
 import { useForm } from 'react-hook-form';
 import logoGif from '../assets/Animation - 1735911293502.gif';
+import { CredentialResponse, GoogleLogin } from '@react-oauth/google';
+import { googleSignin } from '../services/user-service';
 
 interface FormData {
   email: string
@@ -30,6 +32,24 @@ const SignIn: React.FC = () => {
     setSignInError('An unexpected error occurred. Please try again.');
     }
   };
+
+  const onGoogleLoginSuccess = async (credentialResponse: CredentialResponse) => {
+      try {
+        const result = await googleSignin(credentialResponse);
+        if (result && result._id) {
+          navigate('/posts');
+        } else {
+          setSignInError('Failed to sign in with Google');
+        }
+      } catch (err) {
+        console.error("Error during Google login:", err);
+        setSignInError(err instanceof Error ? err.message : 'Failed to sign in with Google');
+      }
+    };
+  
+    const onGoogleLoginFailure = () => {
+      setSignInError('Google sign in failed. Please try again.');
+    };
 
   return (
     <Box
@@ -62,6 +82,19 @@ const SignIn: React.FC = () => {
 		alt="Logo"
 		sx={{ width: 150, height: 150, marginBottom: 2 }}
 		/>
+    <Box sx={{ width: '100%', mb: 2 }}>
+              <GoogleLogin 
+                onSuccess={onGoogleLoginSuccess} 
+                onError={onGoogleLoginFailure}
+                theme="outline"
+                size="large"
+                text="signup_with"
+                shape="rectangular"
+              />
+            </Box>
+
+
+    
         <Typography variant="h4" component="h1" gutterBottom>
           Sign In
         </Typography>
