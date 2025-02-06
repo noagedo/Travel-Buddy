@@ -1,4 +1,4 @@
-import { FC } from "react";
+import { FC, useEffect, useState } from "react";
 import { Grid, Container } from "@mui/material";
 import ItemsList from "./ItemsList";
 import usePosts from "../hooks/usePosts";
@@ -6,7 +6,15 @@ import useUsers from "../hooks/useUsers";
 
 const PostsList: FC = () => {
   const { posts, isLoading, error } = usePosts();
-  const { user } = useUsers(); 
+  const { user: initialUser } = useUsers(); 
+  const [user, setUser] = useState(initialUser);
+
+  useEffect(() => {
+    const storedUser = localStorage.getItem('user');
+    if (storedUser) {
+      setUser(JSON.parse(storedUser));
+    }
+  }, [setUser]);
 
   if (!user) {
     return <p>Please log in to view posts.</p>;
@@ -31,7 +39,7 @@ const PostsList: FC = () => {
               likesBy={post.likesBy}
               photos={post.photos}
               onItemSelected={(id) => console.log("Selected Post ID:", id)}
-              user={user} 
+              user={user}
               onEditPost={(id) => console.log("Edit Post ID:", id)}
               onDeletePost={(id) => console.log("Delete Post ID:", id)}
             />
@@ -43,3 +51,4 @@ const PostsList: FC = () => {
 };
 
 export default PostsList;
+
