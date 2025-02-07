@@ -1,5 +1,6 @@
 import { useState, useEffect } from "react";
-import userService, { User } from "../services/user-service";
+import userService, { googleSignin, User } from "../services/user-service";
+import { CredentialResponse } from '@react-oauth/google';
 
 const useUsers = () => {
   const [user, setUser] = useState<User | null>(null);
@@ -17,10 +18,9 @@ const useUsers = () => {
     setIsLoading(true);
     setError(null);
     try {
-      const { request } = userService.signIn({ email, password});
+      const { request } = userService.signIn({ email, password });
       const response = await request;
       setUser(response.data);
-      console.log(response.data);
       localStorage.setItem('user', JSON.stringify(response.data));
       return { success: true };
     } catch (err) {
@@ -31,7 +31,24 @@ const useUsers = () => {
     } finally {
       setIsLoading(false);
     }
-    
+  };
+
+  const signUpWithGoogle = async (credentialResponse: CredentialResponse) => {
+    setIsLoading(true);
+    setError(null);
+    try {
+      const user = await googleSignin(credentialResponse);
+      setUser(user);
+      localStorage.setItem('user', JSON.stringify(user));
+      return { success: true };
+    } catch (err) {
+      const errorMessage = "Failed to sign up with Google. Please try again.";
+      setError(errorMessage);
+      console.error(err);
+      return { success: false, error: errorMessage };
+    } finally {
+      setIsLoading(false);
+    }
   };
 
   const signUp = async (email: string, password: string, userName: string, avatarFile?: File) => {
@@ -70,8 +87,6 @@ const useUsers = () => {
     localStorage.removeItem('user');
   };
 
-
-
   const updateUser = async (updatedUser: User) => {
     setIsLoading(true);
     setError(null);
@@ -91,8 +106,7 @@ const useUsers = () => {
     }
   };
 
-
-  return { user, error, isLoading, signIn, signUp, signOut, updateUser };
+  return { user, error, isLoading, signIn, signUp, signOut, updateUser, signUpWithGoogle };
 };
 
 export default useUsers;

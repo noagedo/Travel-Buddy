@@ -5,51 +5,51 @@ import { Box, Button, TextField, Typography, Alert } from '@mui/material';
 import { useForm } from 'react-hook-form';
 import logoGif from '../assets/Animation - 1735911293502.gif';
 import { CredentialResponse, GoogleLogin } from '@react-oauth/google';
-import { googleSignin } from '../services/user-service';
 
 interface FormData {
-  email: string
-  password: string
+  email: string;
+  password: string;
 }
 
 const SignIn: React.FC = () => {
   const navigate = useNavigate();
-  const { signIn, isLoading } = useUsers();
+  const { signIn, signUpWithGoogle, isLoading } = useUsers();
   const { register, handleSubmit, formState: { errors } } = useForm<FormData>();
   const [signInError, setSignInError] = useState<string | null>(null);
 
   const onSubmit = async (data: FormData) => {
-    setSignInError(null); 
-	try {
-		const result = await signIn(data.email, data.password);
-		if (result.success) {
-		  navigate('/posts'); 
-      window.location.reload();
-		} else {
-		  setSignInError(result.error || 'Invalid email or password. Please try again.');
-		}
+    setSignInError(null);
+    try {
+      const result = await signIn(data.email, data.password);
+      if (result.success) {
+        navigate('/posts');
+        window.location.reload();
+      } else {
+        setSignInError(result.error || 'Invalid email or password. Please try again.');
+      }
     } catch {
-    setSignInError('An unexpected error occurred. Please try again.');
+      setSignInError('An unexpected error occurred. Please try again.');
     }
   };
 
   const onGoogleLoginSuccess = async (credentialResponse: CredentialResponse) => {
-      try {
-        const result = await googleSignin(credentialResponse);
-        if (result && result._id) {
-          navigate('/posts');
-        } else {
-          setSignInError('Failed to sign in with Google');
-        }
-      } catch (err) {
-        console.error("Error during Google login:", err);
-        setSignInError(err instanceof Error ? err.message : 'Failed to sign in with Google');
+    try {
+      const result = await signUpWithGoogle(credentialResponse);
+      if (result.success) {
+        navigate('/posts');
+        window.location.reload();
+      } else {
+        setSignInError(result.error || 'An unexpected error occurred.');
       }
-    };
-  
-    const onGoogleLoginFailure = () => {
-      setSignInError('Google sign in failed. Please try again.');
-    };
+    } catch (err) {
+      console.error("Error during Google login:", err);
+      setSignInError(err instanceof Error ? err.message : 'Failed to sign in with Google');
+    }
+  };
+
+  const onGoogleLoginFailure = () => {
+    setSignInError('Google sign in failed. Please try again.');
+  };
 
   return (
     <Box
@@ -76,25 +76,23 @@ const SignIn: React.FC = () => {
           bgcolor: 'background.paper',
         }}
       >
-	  <Box
-		component="img"
-		src={logoGif}
-		alt="Logo"
-		sx={{ width: 150, height: 150, marginBottom: 2 }}
-		/>
-    <Box sx={{ width: '100%', mb: 2 }}>
-              <GoogleLogin 
-                onSuccess={onGoogleLoginSuccess} 
-                onError={onGoogleLoginFailure}
-                theme="outline"
-                size="large"
-                text="signup_with"
-                shape="rectangular"
-              />
-            </Box>
+        <Box
+          component="img"
+          src={logoGif}
+          alt="Logo"
+          sx={{ width: 150, height: 150, marginBottom: 2 }}
+        />
+        <Box sx={{ width: '100%', mb: 2 }}>
+          <GoogleLogin 
+            onSuccess={onGoogleLoginSuccess} 
+            onError={onGoogleLoginFailure}
+            theme="outline"
+            size="large"
+            text="signin_with"
+            shape="rectangular"
+          />
+        </Box>
 
-
-    
         <Typography variant="h4" component="h1" gutterBottom>
           Sign In
         </Typography>

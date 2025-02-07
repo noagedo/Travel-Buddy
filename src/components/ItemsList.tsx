@@ -145,7 +145,8 @@ const ItemsList: FC<ItemsListProps> = ({ _id, sender, content, createdAt, likes,
     <Card sx={{ maxWidth: 600, margin: "auto", boxShadow: 3, borderRadius: 2, marginBottom: 2 }}>
       
       <CardHeader
-        avatar={<Avatar>{sender.charAt(0).toUpperCase()}</Avatar>}
+        
+        avatar={<Avatar src={user?.profilePicture}></Avatar>}
         action={
           user && user.userName === sender && onEditPost && onDeletePost && (
             <>
