@@ -34,6 +34,7 @@ import useComments from "../hooks/useComments"; // Import useComments hook
 interface ItemsListProps {
   _id: string;
   sender: string;
+  senderProfilePicture: string; // Add senderProfilePicture prop
   content: string;
   createdAt: string;
   likes: number;
@@ -45,7 +46,7 @@ interface ItemsListProps {
   onDeletePost?: (postId: string) => void; // Make onDeletePost prop optional
 }
 
-const ItemsList: FC<ItemsListProps> = ({ _id, sender, content, createdAt, likes, likesBy, photos, user, onEditPost, onDeletePost }) => {
+const ItemsList: FC<ItemsListProps> = ({ _id, sender, senderProfilePicture, content, createdAt, likes, likesBy, photos, user, onEditPost, onDeletePost }) => {
   const [isLiked, setIsLiked] = useState(user && user._id ? likesBy.includes(user._id) : false);
   const [currentLikes, setCurrentLikes] = useState(likes);
   const [showComments, setShowComments] = useState(false);
@@ -72,6 +73,7 @@ const ItemsList: FC<ItemsListProps> = ({ _id, sender, content, createdAt, likes,
         likes: newLikes,
         likesBy: newLikesBy,
         photos,
+        senderProfilePicture,
       });
     } catch (err) {
       console.error("Error updating likes:", err);
@@ -145,8 +147,7 @@ const ItemsList: FC<ItemsListProps> = ({ _id, sender, content, createdAt, likes,
     <Card sx={{ maxWidth: 600, margin: "auto", boxShadow: 3, borderRadius: 2, marginBottom: 2 }}>
       
       <CardHeader
-        
-        avatar={<Avatar src={user?.profilePicture}></Avatar>}
+        avatar={<Avatar src={senderProfilePicture}></Avatar>} // Use senderProfilePicture
         action={
           user && user.userName === sender && onEditPost && onDeletePost && (
             <>
@@ -238,7 +239,7 @@ const ItemsList: FC<ItemsListProps> = ({ _id, sender, content, createdAt, likes,
               {comments.map((comment, index) => (
                 <ListItem key={index} alignItems="flex-start">
                 <ListItemAvatar>
-                  <Avatar alt={comment.sender} src={user?.profilePicture} />
+                  <Avatar alt={comment.sender} src={comment.sender} />
                 </ListItemAvatar>
                 <ListItemText
                   primary={

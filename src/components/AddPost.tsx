@@ -36,6 +36,7 @@ const AddPost: FC<AddPostProps> = ({ user }) => {
 
       const newPost: Omit<Post, "_id" | "createdAt" | "likes" | "likesBy"> = {
         sender: user.userName,
+        senderProfilePicture: user.profilePicture || "", // Include senderProfilePicture
         content,
         photos: uploadedUrls,
       };

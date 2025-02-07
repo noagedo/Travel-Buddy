@@ -26,6 +26,7 @@ const UserPostsList: FC<UserPostsListProps> = ({ posts, isLoading, error, onEdit
             <ItemsList
               _id={post._id}
               sender={post.sender}
+              senderProfilePicture={post.senderProfilePicture} // Pass senderProfilePicture prop
               content={post.content}
               createdAt={post.createdAt}
               likes={post.likes}
