@@ -1,19 +1,17 @@
-import  { CanceledError } from "./api-client"
-import createHttpService from "./http-service"
+import { CanceledError } from "./api-client";
+import createHttpService from "./http-service";
 
-
-export { CanceledError }
+export { CanceledError };
 
 export interface Post {
-    _id: string
-    sender: string;
-    content: string;
-    createdAt: string;
-    likes: number;
-    likesBy: string[];
-    photos: string[];
-    
-
+  _id: string;
+  sender: string;
+  content: string;
+  createdAt: string;
+  likes: number;
+  likesBy: string[];
+  photos: string[];
+  senderProfilePicture: string; // Add senderProfilePicture field
 }
 
 const postService = createHttpService<Post>("/posts");
