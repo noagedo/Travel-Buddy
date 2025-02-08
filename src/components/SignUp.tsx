@@ -9,6 +9,7 @@ import { useForm } from 'react-hook-form';
 import logoGif from '../assets/Animation - 1735911293502.gif';
 import { CredentialResponse, GoogleLogin } from '@react-oauth/google';
 import userService from '../services/user-service';
+import Loading from './Loading';
 
 interface FormData {
   email: string;
@@ -25,6 +26,7 @@ const SignUp: React.FC = () => {
   const { register, handleSubmit, watch, formState: { errors } } = useForm<FormData>();
   const [img] = watch(["img"]);
   const [signupError, setSignupError] = useState<string | null>(null);
+  const [isSubmitting, setIsSubmitting] = useState(false);
 
   useEffect(() => {
     if (img?.[0]) {
@@ -51,6 +53,7 @@ const SignUp: React.FC = () => {
       return;
     }
 
+    setIsSubmitting(true);
     try {
       const formData = new FormData();
       formData.append('file', selectedImage);
@@ -65,27 +68,37 @@ const SignUp: React.FC = () => {
       await signUp(data.email, data.password, data.userName, selectedImage);
       
       if (!error) {
-        navigate('/posts');
-        window.location.reload();
+        setIsSubmitting(true);
+        setTimeout(() => {
+          navigate('/posts');
+          window.location.reload();
+        }, 1000);
       }
     } catch (err) {
       console.error("Error during sign up:", err);
       setSignupError('Failed to complete signup. Please try again.');
+      setIsSubmitting(false);
     }
   };
 
   const onGoogleLoginSuccess = async (credentialResponse: CredentialResponse) => {
+    setIsSubmitting(true);
     try {
       const result = await signUpWithGoogle(credentialResponse);
       if (result.success) {
-        navigate('/posts');
-        window.location.reload();
+        setIsSubmitting(true);
+        setTimeout(() => {
+          navigate('/posts');
+          window.location.reload();
+        }, 1000);
       } else {
         setSignupError(result.error ?? 'An unknown error occurred');
+        setIsSubmitting(false);
       }
     } catch (err) {
       console.error("Error during Google login:", err);
       setSignupError(err instanceof Error ? err.message : 'Failed to sign in with Google');
+      setIsSubmitting(false);
     }
   };
 
@@ -97,6 +110,7 @@ const SignUp: React.FC = () => {
 
   return (
     <Box sx={{ display: 'flex', flexDirection: 'column', justifyContent: 'center', alignItems: 'center', minHeight: '100vh', bgcolor: '#f5f5f5', p: 2 }}>
+      {isSubmitting && <Loading />}
       <Box sx={{ display: 'flex', flexDirection: 'column', alignItems: 'center', width: '100%', maxWidth: 400, padding: 3, boxShadow: 3, borderRadius: 2, bgcolor: 'background.paper' }}>
         <Box component="img" src={logoGif} alt="Logo" sx={{ width: 150, height: 150, marginBottom: 2 }} />
         <Typography variant="h4" component="h1" gutterBottom>Sign Up</Typography>

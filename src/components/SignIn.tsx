@@ -5,6 +5,7 @@ import { Box, Button, TextField, Typography, Alert } from '@mui/material';
 import { useForm } from 'react-hook-form';
 import logoGif from '../assets/Animation - 1735911293502.gif';
 import { CredentialResponse, GoogleLogin } from '@react-oauth/google';
+import Loading from './Loading';
 
 interface FormData {
   email: string;
@@ -16,34 +17,47 @@ const SignIn: React.FC = () => {
   const { signIn, signUpWithGoogle, isLoading } = useUsers();
   const { register, handleSubmit, formState: { errors } } = useForm<FormData>();
   const [signInError, setSignInError] = useState<string | null>(null);
+  const [isSubmitting, setIsSubmitting] = useState(false);
 
   const onSubmit = async (data: FormData) => {
     setSignInError(null);
+    setIsSubmitting(true);
     try {
       const result = await signIn(data.email, data.password);
       if (result.success) {
-        navigate('/posts');
-        window.location.reload();
+        setIsSubmitting(true);
+        setTimeout(() => {
+          navigate('/posts');
+          window.location.reload();
+        }, 1000);
       } else {
         setSignInError(result.error || 'Invalid email or password. Please try again.');
+        setIsSubmitting(false);
       }
     } catch {
       setSignInError('An unexpected error occurred. Please try again.');
+      setIsSubmitting(false);
     }
   };
 
   const onGoogleLoginSuccess = async (credentialResponse: CredentialResponse) => {
+    setIsSubmitting(true);
     try {
       const result = await signUpWithGoogle(credentialResponse);
       if (result.success) {
-        navigate('/posts');
-        window.location.reload();
+        setIsSubmitting(true);
+        setTimeout(() => {
+          navigate('/posts');
+          window.location.reload();
+        }, 1000);
       } else {
         setSignInError(result.error || 'An unexpected error occurred.');
+        setIsSubmitting(false);
       }
     } catch (err) {
       console.error("Error during Google login:", err);
       setSignInError(err instanceof Error ? err.message : 'Failed to sign in with Google');
+      setIsSubmitting(false);
     }
   };
 
@@ -63,6 +77,7 @@ const SignIn: React.FC = () => {
         p: 2
       }}
     >
+      {isSubmitting && <Loading />}
       <Box
         sx={{
           display: 'flex',

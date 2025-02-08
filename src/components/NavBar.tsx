@@ -1,17 +1,25 @@
 import React, { useState } from 'react';
 import { AppBar, Toolbar, Typography, Box, Button } from '@mui/material';
-import { Link, useNavigate } from 'react-router-dom';
+import {  useNavigate } from 'react-router-dom';
 import logo from '../assets/logo.webp';
 import useUsers from '../hooks/useUsers';
 import AccountCircle from '@mui/icons-material/AccountCircle';
 import AddCircle from '@mui/icons-material/AddCircle';
 import Logout from '@mui/icons-material/Logout';
-
+import Loading from './Loading';
 
 const NavBar: React.FC = () => {
   const { user, signOut } = useUsers();
   const [loading, setLoading] = useState(false);
   const navigate = useNavigate();
+
+  const handleNavigation = (path: string) => {
+    setLoading(true);
+    setTimeout(() => {
+      navigate(path);
+      setLoading(false);
+    }, 1000);
+  };
 
   const handleLogout = async () => {
     const confirmed = window.confirm('Are you sure you want to logout?');
@@ -20,18 +28,19 @@ const NavBar: React.FC = () => {
     setLoading(true);
     await signOut();
     setTimeout(() => {
-      setLoading(false);
       navigate('/');
+      setLoading(false);
     }, 1000);
   };
 
   return (
-    <AppBar position="static" sx={{ backgroundColor: '#333' }}>
-      <Toolbar sx={{ display: 'flex', justifyContent: 'space-between' }}>
-        {/* Logo and Title */}
-        <Box sx={{ display: 'flex', alignItems: 'center' }}>
-          <img src={logo} alt="TravelBuddy Logo" style={{ width: '40px', height: '40px', marginRight: '20px' }} />
-          <Typography
+    <>
+      <AppBar position="static" sx={{ backgroundColor: '#333' }}>
+        <Toolbar sx={{ display: 'flex', justifyContent: 'space-between' }}>
+          {/* Logo and Title */}
+          <Box sx={{ display: 'flex', alignItems: 'center' }}>
+            <img src={logo} alt="TravelBuddy Logo" style={{ width: '40px', height: '40px', marginRight: '20px' }} />
+            <Typography
               variant="h4"
               color="inherit"
               sx={{
@@ -41,57 +50,54 @@ const NavBar: React.FC = () => {
                 fontWeight: "bold",
                 textDecoration: "none"
               }}
-               component={Link}
-                  to="/posts"
+              onClick={() => handleNavigation('/posts')}
             >
               TravelBuddy
             </Typography>
-        </Box>
+          </Box>
 
-        {/* Navigation Links */}
-        <Box sx={{ display: 'flex', alignItems: 'center' }}>
-          {user ? (
-            <>
-              <Typography variant="h6" color="inherit" sx={{ marginRight: 2 }}>
-                Welcome, {user.userName}
-              </Typography>
-              <Button
+          
+          <Box sx={{ display: 'flex', alignItems: 'center' }}>
+            {user ? (
+              <>
+                <Typography variant="h6" color="inherit" sx={{ marginRight: 2 }}>
+                  Welcome, {user.userName}
+                </Typography>
+                <Button
                   color="inherit"
-                  component={Link}
-                  to="/add-post"
+                  onClick={() => handleNavigation('/add-post')}
                   disabled={loading}
-                  sx={{ border: '2px solid pink', marginLeft: 2 }}
+                  sx={{ border: '2px solid pink', marginLeft: 2, color: 'inherit' }}
                 >
                   <AddCircle />
                 </Button>
                 <Button
                   color="inherit"
-                  component={Link}
-                  to="/personal-area"
+                  onClick={() => handleNavigation('/personal-area')}
+                  sx={{ border: '2px solid pink', marginLeft: 2, color: 'inherit' }}
                   disabled={loading}
-                  sx={{ border: '2px solid pink', marginLeft: 2 }}
                 >
                   <AccountCircle />
                 </Button>
-              <Button color="inherit" onClick={handleLogout} disabled={loading} sx={{ border: '2px solid pink', marginLeft: 2 }}>
-                {loading ? 'Logging out...' : <Logout />}
-              </Button>
-              
-             
-            </>
-          ) : (
-            <>
-              <Button color="inherit" component={Link} sx={{ border: '2px solid pink', marginLeft: 2 }} to="/sign-in">
-                Sign In
-              </Button>
-              <Button color="inherit" component={Link} sx={{ border: '2px solid pink', marginLeft: 2 }} to="/sign-up">
-                Sign Up
-              </Button>
-            </>
-          )}
-        </Box>
-      </Toolbar>
-    </AppBar>
+                <Button color="inherit" onClick={handleLogout} disabled={loading} sx={{ border: '2px solid pink', marginLeft: 2, color: 'inherit' }}>
+                  <Logout />
+                </Button>
+              </>
+            ) : (
+              <>
+                <Button color="inherit" onClick={() => handleNavigation('/sign-in')} sx={{ border: '2px solid pink', marginLeft: 2, color: 'inherit' }}>
+                  Sign In
+                </Button>
+                <Button color="inherit" onClick={() => handleNavigation('/sign-up')} sx={{ border: '2px solid pink', marginLeft: 2, color: 'inherit' }}>
+                  Sign Up
+                </Button>
+              </>
+            )}
+          </Box>
+        </Toolbar>
+      </AppBar>
+      {loading && <Loading />}
+    </>
   );
 };
 
