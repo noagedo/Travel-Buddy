@@ -97,7 +97,7 @@ const ItemsList: FC<ItemsListProps> = ({ _id, sender, senderProfilePicture, cont
         const comment = {
           postId: _id,
           userId: user?._id || "", 
-          profilePicture: user?.profilePicture || "",
+          senderProfilePicture: user?.profilePicture || "",
           sender: user?.userName || "", 
           content: newComment,
           createdAt: new Date().toISOString(),
@@ -239,7 +239,7 @@ const ItemsList: FC<ItemsListProps> = ({ _id, sender, senderProfilePicture, cont
               {comments.map((comment, index) => (
                 <ListItem key={index} alignItems="flex-start">
                 <ListItemAvatar>
-                  <Avatar alt={comment.sender} src={comment.sender} />
+                  <Avatar alt={comment.sender} src={comment.senderProfilePicture} />
                 </ListItemAvatar>
                 <ListItemText
                   primary={
