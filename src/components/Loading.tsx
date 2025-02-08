@@ -14,7 +14,7 @@ const Loading: React.FC = () => {
         height: '100vh',
       }}
     >
-      <CircularProgress />
+      <CircularProgress  size="3rem"  />
       <Typography variant="h6" sx={{ mt: 2 }}>
         Loading...
       </Typography>
