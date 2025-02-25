@@ -7,6 +7,7 @@ export interface Comment {
   sender: string;
   content: string;
   createdAt: string;
+  senderProfilePicture: string;
 }
 
 const commentService = createHttpService<Comment>("/comments");
