@@ -20,15 +20,27 @@ const PostsList: FC = () => {
     return <p>Please log in to view posts.</p>;
   }
 
+  const sortedPosts = [...posts].sort((a, b) => new Date(b.createdAt).getTime() - new Date(a.createdAt).getTime());
+
+  const handleEditPost = (postId: string) => {
+    console.log("Edit Post ID:", postId);
+    // Add your edit logic here
+  };
+
+  const handleDeletePost = (postId: string) => {
+    console.log("Delete Post ID:", postId);
+    // Add your delete logic here
+  };
+
   return (
     <Container sx={{ padding: 2 }}>
       <br />
       {isLoading && <p>Loading...</p>}
       {error && <p>{error}</p>}
-      {posts.length === 0 && !isLoading && <p>No posts available.</p>}
+      {sortedPosts.length === 0 && !isLoading && <p>No posts available.</p>}
       
       <Grid container spacing={2}>
-        {posts.map((post) => (
+        {sortedPosts.map((post) => (
           <Grid item xs={12} sm={6} key={post._id}>
             <ItemsList
               _id={post._id}
@@ -41,8 +53,9 @@ const PostsList: FC = () => {
               photos={post.photos}
               onItemSelected={(id) => console.log("Selected Post ID:", id)}
               user={user}
-              onEditPost={(id) => console.log("Edit Post ID:", id)}
-              onDeletePost={(id) => console.log("Delete Post ID:", id)}
+              onEditPost={handleEditPost}
+              onDeletePost={handleDeletePost}
+              showMenu={false} // Hide the menu in PostsList
             />
           </Grid>
         ))}

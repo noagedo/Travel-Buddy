@@ -34,7 +34,7 @@ import useComments from "../hooks/useComments"; // Import useComments hook
 interface ItemsListProps {
   _id: string;
   sender: string;
-  senderProfilePicture: string; // Add senderProfilePicture prop
+  senderProfilePicture: string; 
   content: string;
   createdAt: string;
   likes: number;
@@ -42,21 +42,22 @@ interface ItemsListProps {
   photos: string[];
   onItemSelected: (index: number) => void;
   user?: User; 
-  onEditPost?: (postId: string) => void; // Make onEditPost prop optional
-  onDeletePost?: (postId: string) => void; // Make onDeletePost prop optional
+  onEditPost?: (postId: string) => void; 
+  onDeletePost?: (postId: string) => void; 
+  showMenu?: boolean; // Add this prop to control the visibility of the menu
 }
 
-const ItemsList: FC<ItemsListProps> = ({ _id, sender, senderProfilePicture, content, createdAt, likes, likesBy, photos, user, onEditPost, onDeletePost }) => {
+const ItemsList: FC<ItemsListProps> = ({ _id, sender, senderProfilePicture, content, createdAt, likes, likesBy, photos, user, onEditPost, onDeletePost, showMenu = true }) => {
   const [isLiked, setIsLiked] = useState(user && user._id ? likesBy.includes(user._id) : false);
   const [currentLikes, setCurrentLikes] = useState(likes);
   const [showComments, setShowComments] = useState(false);
   const [newComment, setNewComment] = useState("");
-  const { comments, setComments, isLoading, error } = useComments(_id); // Use useComments hook
+  const { comments, setComments, isLoading, error } = useComments(_id); 
   const [anchorEl, setAnchorEl] = useState<null | HTMLElement>(null);
   const [openConfirmDialog, setOpenConfirmDialog] = useState(false);
 
   const handleLike = async () => {
-    if (!user) return; // Ensure user is defined
+    if (!user) return; 
 
     const newLikes = isLiked ? currentLikes - 1 : currentLikes + 1;
     const newLikesBy = isLiked ? likesBy.filter(id => id !== user._id) : [...likesBy, user._id!];
@@ -147,9 +148,9 @@ const ItemsList: FC<ItemsListProps> = ({ _id, sender, senderProfilePicture, cont
     <Card sx={{ maxWidth: 600, margin: "auto", boxShadow: 3, borderRadius: 2, marginBottom: 2 }}>
       
       <CardHeader
-        avatar={<Avatar src={senderProfilePicture}></Avatar>} // Use senderProfilePicture
+        avatar={<Avatar src={senderProfilePicture}></Avatar>}
         action={
-          user && user.userName === sender && onEditPost && onDeletePost && (
+          showMenu && user && user.userName === sender && onEditPost && onDeletePost && (
             <>
               <IconButton onClick={handleMenuOpen}>
                 <MoreVertIcon />
@@ -182,9 +183,12 @@ const ItemsList: FC<ItemsListProps> = ({ _id, sender, senderProfilePicture, cont
           <Typography variant="body2" sx={{ marginLeft: 1 }}>
             {currentLikes} {currentLikes === 1 ? "Like" : "Likes"}
           </Typography>
+          <Typography variant="body2" sx={{ marginLeft: 2 }}>
+            {comments.length} {comments.length === 1 ? "Comment" : "Comments"}
+          </Typography>
         </Box>
 
-        {/* View Comments or Back to Images */}
+        
         <Box sx={{ marginBottom: 2 }}>
           <Button
             variant="outlined"
