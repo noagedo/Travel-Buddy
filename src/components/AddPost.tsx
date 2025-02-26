@@ -11,12 +11,12 @@ import {
   CircularProgress,
 } from "@mui/material";
 import { FontAwesomeIcon } from "@fortawesome/react-fontawesome";
-import { faImage, faPen } from "@fortawesome/free-solid-svg-icons"; // Import AI icon
+import { faImage, faPen } from "@fortawesome/free-solid-svg-icons";  
 import apiClient from "../services/api-client";
-import { GoogleGenerativeAI } from "@google/generative-ai"; // Import Google Generative AI
+import { GoogleGenerativeAI } from "@google/generative-ai"; 
 
-const genAI = new GoogleGenerativeAI("AIzaSyBK11yXUDTuSaNzpZ2GWbFDS38M9_yQ12k"); // Replace with your Google API key
-const model = genAI.getGenerativeModel({ model: "gemini-2.0-flash" }); // Replace with the actual model
+const genAI = new GoogleGenerativeAI(""); //add secret key here
+const model = genAI.getGenerativeModel({ model: "gemini-2.0-flash" }); 
 
 interface AddPostProps {
   user: User;
@@ -136,7 +136,7 @@ const AddPost: FC<AddPostProps> = ({ user }) => {
           <Typography variant="h5" fontWeight="bold" mb={2}>
             Add New Post
           </Typography>
-          <Button
+           <Button
                 variant="outlined"
                 color="primary"
                 size="small" // Make the button smaller
