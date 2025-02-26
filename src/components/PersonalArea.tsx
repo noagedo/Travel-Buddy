@@ -73,46 +73,49 @@ const PersonalArea: FC<PersonalAreaProps> = ({ user }) => {
 
   return (
     <Box>
-      <Box display="flex" alignItems="center" mb={2}>
-        <Avatar src={user.profilePicture} alt={user.userName} />
+      <Box display="flex" alignItems="center" mb={2} p={2} border={1} borderColor="grey.300" borderRadius={2}>
+        <Avatar src={user.profilePicture} alt={user.userName} sx={{ width: 80, height: 80 }} />
+        <Box ml={3} flex={1}>
+          {editMode ? (
+            <TextField
+              label="User Name"
+              value={userName}
+              onChange={(e) => setUserName(e.target.value)}
+              variant="outlined"
+              size="small"
+              margin="dense"
+              sx={{ width: 'auto' }}
+            />
+          ) : (
+            <Typography variant="h6">{user.userName}</Typography>
+          )}
+          {editMode ? (
+            <TextField
+              label="Email"
+              value={email}
+              onChange={(e) => setEmail(e.target.value)}
+              variant="outlined"
+              size="small"
+              margin="dense"
+              sx={{ mt: 1, width: 'auto' }}
+            />
+          ) : (
+            <Typography variant="body2" color="textSecondary">Email: {user.email}</Typography>
+          )}
+        </Box>
+        <Box mt={2} display="flex" justifyContent="flex-start">
         {editMode ? (
-          <TextField
-            label="User Name"
-            value={userName}
-            onChange={(e) => setUserName(e.target.value)}
-            variant="outlined"
-            size="small"
-            margin="dense"
-            sx={{ ml: 2 }}
-          />
-        ) : (
-          <Typography variant="h5" ml={2}>{user.userName}</Typography>
-        )}
-      </Box>
-      {editMode ? (
-        <TextField
-          label="Email"
-          value={email}
-          onChange={(e) => setEmail(e.target.value)}
-          variant="outlined"
-          size="small"
-          margin="dense"
-          sx={{ ml: 2 }}
-        />
-      ) : (
-        <Typography variant="h5" ml={2}>email: {user.email}</Typography>
-      )}
-      <Box mt={2}>
-        {editMode ? (
-          <Button variant="contained" color="primary" onClick={handleSave}>
+          <Button variant="contained" color="primary" onClick={handleSave} sx={{ mr: 1 }}>
             Save
           </Button>
         ) : (
-          <Button variant="contained" color="primary" onClick={() => setEditMode(true)}>
-            Edit
+          <Button variant="outlined" color="primary" onClick={() => setEditMode(true)} sx={{ mr: 1 }}>
+            Edit Profile
           </Button>
         )}
       </Box>
+      </Box>
+      
       <UserPostsList posts={userPosts} isLoading={isLoading} error={error ?? null} onEditPost={handleEditPost} onDeletePost={handleDeletePost} user={user} />
       
       <Dialog open={Boolean(editPostId)} onClose={handleCancelEditPost}>
