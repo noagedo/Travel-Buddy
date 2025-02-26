@@ -15,7 +15,13 @@ import { faImage, faPen } from "@fortawesome/free-solid-svg-icons";
 import apiClient from "../services/api-client";
 import { GoogleGenerativeAI } from "@google/generative-ai"; 
 
-const genAI = new GoogleGenerativeAI(""); //add secret key here
+const apiKey = import.meta.env.VITE_GEN_AI_SECRET_KEY;
+
+if (!apiKey) {
+  throw new Error("GEN_AI_SECRET_KEY is missing.");
+}
+
+const genAI = new GoogleGenerativeAI(apiKey);
 const model = genAI.getGenerativeModel({ model: "gemini-2.0-flash" }); 
 
 interface AddPostProps {
