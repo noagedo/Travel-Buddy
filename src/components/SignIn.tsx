@@ -14,7 +14,7 @@ interface FormData {
 
 const SignIn: React.FC = () => {
   const navigate = useNavigate();
-  const { signIn, signUpWithGoogle, isLoading } = useUsers();
+  const { signIn, signUpWithGoogle, isLoading, user } = useUsers();
   const { register, handleSubmit, formState: { errors } } = useForm<FormData>();
   const [signInError, setSignInError] = useState<string | null>(null);
   const [isSubmitting, setIsSubmitting] = useState(false);
@@ -64,6 +64,15 @@ const SignIn: React.FC = () => {
   const onGoogleLoginFailure = () => {
     setSignInError('Google sign in failed. Please try again.');
   };
+
+  if (isLoading) {
+    return <Loading />;
+  }
+
+  if (user) {
+    navigate('/posts');
+    return null;
+  }
 
   return (
     <Box

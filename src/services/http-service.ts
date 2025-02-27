@@ -30,6 +30,18 @@ class HttpService<T extends BaseEntity>{
         return { request, cancel: ()=>controller.abort()};
     }
 
+    updateImage(id: string, image: File) {
+        const controller = new AbortController();
+        const formData = new FormData();
+        formData.append("image", image);
+
+        const request = apiClient.put(`${this.endpoint}/${id}/image`, formData, {
+            signal: controller.signal
+        });
+
+        return { request, cancel: () => controller.abort() };
+    }
+
     delete(id: string){
         const controller = new AbortController();
         const request = apiClient.delete(`${this.endpoint}/${id}`, {signal: controller.signal});

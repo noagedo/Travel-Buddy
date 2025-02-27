@@ -7,7 +7,7 @@ const Hero: React.FC = () => {
   const navigate = useNavigate();
 
   const handleJoinNowClick = () => {
-    navigate('/sign-up');
+    navigate('/sign-up'); // Correct the route to '/signup'
   };
 
   return (
