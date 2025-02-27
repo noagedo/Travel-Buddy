@@ -152,8 +152,8 @@ const ItemsList: FC<ItemsListProps> = ({ _id, sender, senderProfilePicture, cont
       boxShadow: 3, 
       borderRadius: 2, 
       marginBottom: 2, 
-      //minHeight: 550, 
-      //maxHeight: 550,
+      minHeight: 560, 
+      maxHeight: 560,
       display: "flex", 
       flexDirection: "column" 
     }}

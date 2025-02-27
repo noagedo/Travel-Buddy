@@ -26,7 +26,7 @@ const UserPostsList: FC<UserPostsListProps> = ({ posts, isLoading, error, onEdit
     <Grid container spacing={2}>
       {posts.map((post) => (
         <Grid item xs={12} sm={6} md={4} key={post._id}>
-          <Box border={1} borderColor="grey.300" borderRadius={2} p={2}>
+          <Box p={2}>
             <ItemsList
               _id={post._id}
               sender={post.sender}

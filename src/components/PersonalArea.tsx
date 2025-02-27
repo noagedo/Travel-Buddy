@@ -6,6 +6,7 @@ import UserPostsList from "./userPostsList";
 import { User } from "../services/user-service";
 import { Post } from "../services/post-service";
 import postService from "../services/post-service";
+import commentService, { Comment } from "../services/comment-service"; // Import comment service and Comment interface
 
 interface PersonalAreaProps {
   user: User;
@@ -31,7 +32,25 @@ const PersonalArea: FC<PersonalAreaProps> = ({ user }) => {
     const updatedUser = { ...user, userName, email };
     const result = await updateUser(updatedUser);
     if (result.success) {
+      // Update the user's name in all posts
+      const updatedPosts = userPosts.map((post) => ({
+        ...post,
+        sender: userName,
+      }));
+      await Promise.all(updatedPosts.map((post) => postService.update(post)));
+      setPosts(posts.map((post) => (post.sender === user.userName ? { ...post, sender: userName } : post)));
+
+      // Update the user's name in all comments
+      const { data: comments } = await (await commentService.getAll().request);
+      const userComments = comments.filter((comment: Comment) => comment.sender === user.userName);
+      const updatedComments = userComments.map((comment: Comment) => ({
+        ...comment,
+        sender: userName,
+      }));
+      await Promise.all(updatedComments.map((comment: Comment) => commentService.update(comment)));
+
       setEditMode(false);
+      window.location.reload(); // Reload the page
     }
   };
 
@@ -73,7 +92,7 @@ const PersonalArea: FC<PersonalAreaProps> = ({ user }) => {
 
   return (
     <Box>
-      <Box display="flex" alignItems="center" mb={2} p={2} border={1} borderColor="grey.300" borderRadius={2}>
+      <Box display="flex" alignItems="center" mb={2} p={2} border={1} borderColor="grey.300" borderRadius={2} bgcolor="white">
         <Avatar src={user.profilePicture} alt={user.userName} sx={{ width: 80, height: 80 }} />
         <Box ml={3} flex={1}>
           {editMode ? (
