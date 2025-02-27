@@ -1,8 +1,15 @@
 import React from 'react';
 import { Box, Typography, Button } from '@mui/material';
+import { useNavigate } from 'react-router-dom';
 import backgroundImage from '../assets/picture-HomePage.jpg'; // Adjust the path
 
 const Hero: React.FC = () => {
+  const navigate = useNavigate();
+
+  const handleJoinNowClick = () => {
+    navigate('/sign-up');
+  };
+
   return (
     <Box
       sx={{
@@ -19,7 +26,7 @@ const Hero: React.FC = () => {
         position: 'relative', // Enable positioning for the overlay
       }}
     >
-         {/* Dark overlay */}
+      {/* Dark overlay */}
       <Box
         sx={{
           position: 'absolute',
@@ -48,18 +55,20 @@ const Hero: React.FC = () => {
             '&:hover': { backgroundColor: '#E73370' },
             mb: 3,
           }}
+          onClick={handleJoinNowClick}
         >
           Join Now
         </Button>
-        <Typography variant="body1" sx={{ fontSize: '1.3rem', maxWidth: '600px', textAlign: 'center', mx: 'auto' }}>
+        <Typography variant="body1" sx={{ fontSize: '1.3rem', maxWidth: '700px', textAlign: 'left', mx: 'auto' }}>
           <strong>Features:</strong><br />
-          - External content: AI-powered suggestions for new travel destinations.<br />
-          - Share experiences: Post your travel experiences with text and images.<br />
-          - Comments and Likes: Comment on posts and give likes.<br />
-          - User Profile: A list of destinations you’ve visited or planned to visit.
+          - External content : AI-powered suggestions for writing a post.<br />
+          - Share experiences : Post your travel experiences with text and images.<br />
+          - Comments and Likes : Comment on posts and give likes.<br />
+          - User Profile : A list of destinations you’ve visited or planned to visit.
         </Typography>
+        </Box>
       </Box>
-    </Box>
+    
   );
 };
 

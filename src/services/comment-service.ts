@@ -5,9 +5,9 @@ export interface Comment {
   postId: string;
   userId: string;
   sender: string;
+  senderProfilePicture: string;
   content: string;
   createdAt: string;
-  senderProfilePicture: string;
 }
 
 const commentService = createHttpService<Comment>("/comments");

@@ -145,7 +145,19 @@ const ItemsList: FC<ItemsListProps> = ({ _id, sender, senderProfilePicture, cont
   };
 
   return (
-    <Card sx={{ maxWidth: 600, margin: "auto", boxShadow: 3, borderRadius: 2, marginBottom: 2 }}>
+    <Card 
+    sx={{ 
+      maxWidth: 600, 
+      margin: "auto", 
+      boxShadow: 3, 
+      borderRadius: 2, 
+      marginBottom: 2, 
+      minHeight: 560, 
+      maxHeight: 560,
+      display: "flex", 
+      flexDirection: "column" 
+    }}
+  >
       
       <CardHeader
         avatar={<Avatar src={senderProfilePicture}></Avatar>}
@@ -170,110 +182,123 @@ const ItemsList: FC<ItemsListProps> = ({ _id, sender, senderProfilePicture, cont
         subheader={new Date(createdAt).toLocaleString()}
       />
 
-      <CardContent>
-        
-        <Typography variant="body2" color="text.secondary" gutterBottom>
-          {content}
-        </Typography>
+<CardContent
+  sx={{
+    flexGrow: 1,
+    display: "flex",
+    flexDirection: "column", // Ensures content stacks vertically
+  }}
+>
+  <Typography
+    variant="body2"
+    color="text.secondary"
+    gutterBottom
+    sx={{
+      maxHeight: 100, 
+      overflow: "auto", 
+      whiteSpace: "pre-wrap",
+    }}
+  >
+    {content}
+  </Typography>
 
-        <Box sx={{ display: "flex", alignItems: "center", marginBottom: 2 }}>
-          <IconButton onClick={handleLike}>
-            <FavoriteIcon sx={{ color: isLiked ? "red" : "gray" }} />
-          </IconButton>
-          <Typography variant="body2" sx={{ marginLeft: 1 }}>
-            {currentLikes} {currentLikes === 1 ? "Like" : "Likes"}
-          </Typography>
-          <Typography variant="body2" sx={{ marginLeft: 2 }}>
-            {comments.length} {comments.length === 1 ? "Comment" : "Comments"}
-          </Typography>
-        </Box>
+  <Box sx={{ display: "flex", alignItems: "center", marginBottom: 2 }}>
+    <IconButton onClick={handleLike}>
+      <FavoriteIcon sx={{ color: isLiked ? "red" : "gray" }} />
+    </IconButton>
+    <Typography variant="body2" sx={{ marginLeft: 1 }}>
+      {currentLikes} {currentLikes === 1 ? "Like" : "Likes"}
+    </Typography>
+    <Typography variant="body2" sx={{ marginLeft: 2 }}>
+      {comments.length} {comments.length === 1 ? "Comment" : "Comments"}
+    </Typography>
+  </Box>
 
-        
-        <Box sx={{ marginBottom: 2 }}>
-          <Button
-            variant="outlined"
-            startIcon={showComments ? <ArrowBackIcon /> : <CommentIcon />}
-            onClick={showComments ? handleBackToImages : handleViewComments}
-          >
-            {showComments ? "Back to Images" : "View Comments"}
-          </Button>
-        </Box>
+  <Box sx={{ marginBottom: 2 }}>
+    <Button
+      variant="outlined"
+      startIcon={showComments ? <ArrowBackIcon /> : <CommentIcon />}
+      onClick={showComments ? handleBackToImages : handleViewComments}
+    >
+      {showComments ? "Back to Images" : "View Comments"}
+    </Button>
+  </Box>
 
-        
-        {!showComments ? (
-          <Box
-            sx={{
-              display: "flex",
-              overflowX: "scroll",
-              gap: 2,
-              padding: 2,
-            }}
-          >
-            {photos.map((photo, index) => (
-              <Box
-                key={index}
-                component="img"
-                src={photo}
-                sx={{
-                  height: 200,
-                  borderRadius: "8px",
-                  boxShadow: 2,
-                  objectFit: "cover",
-                }}
-              />
-            ))}
-          </Box>
-        ) : (
-          <Box>
-            <Stack direction="row" spacing={1} sx={{ marginBottom: 2 }}>
-              <TextField
-                value={newComment}
-                onChange={(e) => setNewComment(e.target.value)}
-                label="Add a comment"
-                variant="outlined"
-                fullWidth
-              />
-              <Button variant="contained" onClick={handleAddComment}>
-                Add
-              </Button>
-            </Stack>
-            {isLoading && <p>Loading comments...</p>}
-            {error && <p>{error}</p>}
-            <List>
-              {comments.map((comment, index) => (
-                <ListItem key={index} alignItems="flex-start">
-                <ListItemAvatar>
-                  <Avatar alt={comment.sender} src={comment.senderProfilePicture} />
-                </ListItemAvatar>
-                <ListItemText
-                  primary={
-                    <React.Fragment>
-                      <Typography
-                        sx={{ display: 'inline' }}
-                        component="span"
-                        variant="body2"
-                        color="text.primary"
-                      >
-                        {comment.sender}
-                      </Typography>
-                      <br />
-                      <Typography
-                        sx={{ wordWrap: 'break-word' }}
-                        component="span"
-                        variant="body2"
-                        color="text.secondary"
-                      >
-                        {comment.content}
-                      </Typography>
-                    </React.Fragment>
-                  }
-                />
-              </ListItem>
-              ))}
-            </List>
-          </Box>
-        )}
-      </CardContent>
+  {!showComments ? (
+    <Box
+      sx={{
+        display: "flex",
+        overflowX: "scroll",
+        gap: 2,
+        padding: 2,
+        mt: "auto", // Pushes images to the bottom
+      }}
+    >
+      {photos.map((photo, index) => (
+        <Box
+          key={index}
+          component="img"
+          src={photo}
+          sx={{
+            height: 200,
+            borderRadius: "8px",
+            boxShadow: 2,
+            objectFit: "cover",
+          }}
+        />
+      ))}
+    </Box>
+  ) : (
+    <Box>
+      <Stack direction="row" spacing={1} sx={{ marginBottom: 2 }}>
+        <TextField
+          value={newComment}
+          onChange={(e) => setNewComment(e.target.value)}
+          label="Add a comment"
+          variant="outlined"
+          fullWidth
+        />
+        <Button variant="contained" onClick={handleAddComment}>
+          Add
+        </Button>
+      </Stack>
+      {isLoading && <p>Loading comments...</p>}
+      {error && <p>{error}</p>}
+      <List>
+        {comments.map((comment, index) => (
+          <ListItem key={index} alignItems="flex-start">
+            <ListItemAvatar>
+              <Avatar alt={comment.sender} src={comment.senderProfilePicture} />
+            </ListItemAvatar>
+            <ListItemText
+              primary={
+                <React.Fragment>
+                  <Typography
+                    sx={{ display: "inline" }}
+                    component="span"
+                    variant="body2"
+                    color="text.primary"
+                  >
+                    {comment.sender}
+                  </Typography>
+                  <br />
+                  <Typography
+                    sx={{ wordWrap: "break-word" }}
+                    component="span"
+                    variant="body2"
+                    color="text.secondary"
+                  >
+                    {comment.content}
+                  </Typography>
+                </React.Fragment>
+              }
+            />
+          </ListItem>
+        ))}
+      </List>
+    </Box>
+  )}
+</CardContent>
 
       <Dialog
         open={openConfirmDialog}

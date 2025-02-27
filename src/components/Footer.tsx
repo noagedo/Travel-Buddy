@@ -1,120 +1,65 @@
-import * as React from 'react';
-import Link from '@mui/material/Link';
-import Container from '@mui/material/Container';
-import TextField from '@mui/material/TextField';
-import { Box, Typography } from '@mui/material';
-import Grid from '@mui/material/Grid';
-import logo from '../assets/logo.webp';
+import React from "react";
+import { Box, Container, Typography, Link, IconButton } from "@mui/material";
+import { Facebook, Instagram, Twitter, LinkedIn } from "@mui/icons-material";
 
-function Copyright() {
-  return (
-    <React.Fragment>
-      {'© '}
-      <Link color="inherit" href="https://mui.com/">
-        TravelBuddy
-      </Link>{' '}
-      {new Date().getFullYear()}
-    </React.Fragment>
-  );
-}
+const Footer: React.FC = () => {
+	return (
+		<Box
+			component="footer"
+			sx={{
+				backgroundColor: '#FF4081',
+				color: "white",
+				paddingY: 3,
+				marginTop: "auto",
+			}}
+		>
+			<Container maxWidth="lg">
+				<Box
+					sx={{
+						display: "flex",
+						justifyContent: "space-between",
+						alignItems: "center",
+						flexWrap: "wrap",
+						textAlign: "center",
+					}}
+				>
+					
+					<Box sx={{ display: "flex", gap: 2 }}>
+						<Link href="/about" color="inherit" underline="hover">
+							About
+						</Link>
+						<Link href="/contact" color="inherit" underline="hover">
+							Contact
+						</Link>
+						<Link href="/privacy" color="inherit" underline="hover">
+							Privacy Policy
+						</Link>
+					</Box>
 
-const LANGUAGES = [
-  {
-    code: 'en-US',
-    name: 'English',
-  },
-];
+					
+					<Box>
+						<IconButton href="https://facebook.com" target="_blank" color="inherit">
+							<Facebook />
+						</IconButton>
+						<IconButton href="https://instagram.com" target="_blank" color="inherit">
+							<Instagram />
+						</IconButton>
+						<IconButton href="https://twitter.com" target="_blank" color="inherit">
+							<Twitter />
+						</IconButton>
+						<IconButton href="https://linkedin.com" target="_blank" color="inherit">
+							<LinkedIn />
+						</IconButton>
+					</Box>
 
-const Footer = () => {
-  return (
-    <Typography
-      component="footer"
-      sx={{
-        display: 'flex',
-        bgcolor: 'secondary.light',
-        direction: 'rtl', // Right-to-left direction
-        paddingTop: 4,
-        paddingBottom: 4,
-        justifyContent: 'center', // Centers the entire footer content
-      }}
-    >
-      <Container sx={{ display: 'flex', justifyContent: 'center' }}>
-        <Grid container spacing={5} sx={{ justifyContent: 'center' }}>
-          {/* Logo */}
-          <Grid item xs={12} sm={4} md={3} sx={{ textAlign: 'center' }}>
-            <Grid container direction="column" spacing={2} sx={{ justifyContent: 'center', height: 120 }}>
-              <Grid item sx={{ display: 'flex', justifyContent: 'center' }}>
-                <img src={logo} alt="Logo" style={{ width: '100px', height: 'auto' }} />
-              </Grid>
-              <Grid item>
-                <Copyright />
-              </Grid>
-            </Grid>
-          </Grid>
-
-          {/* Legal Links */}
-          <Grid item xs={12} sm={4} md={2} sx={{ textAlign: 'center' }}>
-            <Typography variant="h6" gutterBottom>
-              Legal
-            </Typography>
-            <Box component="ul" sx={{ m: 0, listStyle: 'none', p: 0 }}>
-              <Box component="li" sx={{ py: 0.5 }}>
-                <Link href="/premium-themes/onepirate/terms/">Terms</Link>
-              </Box>
-              <Box component="li" sx={{ py: 0.5 }}>
-                <Link href="/premium-themes/onepirate/privacy/">Privacy</Link>
-              </Box>
-            </Box>
-          </Grid>
-
-          {/* Language Selection */}
-          <Grid item xs={12} sm={4} md={4} sx={{ textAlign: 'center' }}>
-            <Typography variant="h6" gutterBottom>
-              Language
-            </Typography>
-            <TextField
-              select
-              size="medium"
-              variant="standard"
-              SelectProps={{
-                native: true,
-              }}
-              sx={{ mt: 1, width: 150 }}
-            >
-              {LANGUAGES.map((language) => (
-                <option value={language.code} key={language.code}>
-                  {language.name}
-                </option>
-              ))}
-            </TextField>
-          </Grid>
-
-          {/* Attribution */}
-          <Grid item xs={12} sx={{ textAlign: 'center' }}>
-            <Typography variant="caption">
-              {'Icons made by '}
-              <Link href="https://www.freepik.com" rel="sponsored" title="Freepik">
-                Freepik
-              </Link>
-              {' from '}
-              <Link href="https://www.flaticon.com" rel="sponsored" title="Flaticon">
-                www.flaticon.com
-              </Link>
-              {' is licensed by '}
-              <Link
-                href="https://creativecommons.org/licenses/by/3.0/"
-                title="Creative Commons BY 3.0"
-                target="_blank"
-                rel="noopener noreferrer"
-              >
-                CC 3.0 BY
-              </Link>
-            </Typography>
-          </Grid>
-        </Grid>
-      </Container>
-    </Typography>
-  );
-}
+					{/* Right Section - Copyright */}
+					<Typography variant="body2" color="white">
+						&copy; {new Date().getFullYear()} Your Company. All rights reserved.
+					</Typography>
+				</Box>
+			</Container>
+		</Box>
+	);
+};
 
 export default Footer;
