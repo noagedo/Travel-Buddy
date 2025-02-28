@@ -1,6 +1,6 @@
 import { useEffect, useState } from "react";
 import commentService, { Comment } from "../services/comment-service";
-import { CanceledError } from "../services/api-client"; // Correct import
+import { CanceledError } from "../services/api-client"; 
 
 interface CommentWithUser extends Comment {
   user: {

@@ -1,5 +1,5 @@
 import { FC, useEffect, useState } from "react";
-import { Grid, Container, Button, Box } from "@mui/material";
+import { Grid, Button, Box } from "@mui/material";
 import ItemsList from "./ItemsList";
 import usePosts from "../hooks/usePosts";
 import useUsers from "../hooks/useUsers"; 
@@ -25,12 +25,12 @@ const PostsList: FC = () => {
 
   const handleEditPost = (postId: string) => {
     console.log("Edit Post ID:", postId);
-    // Add your edit logic here
+    
   };
 
   const handleDeletePost = (postId: string) => {
     console.log("Delete Post ID:", postId);
-    // Add your delete logic here
+   
   };
 
   const handleLoadMorePosts = () => {
@@ -38,7 +38,7 @@ const PostsList: FC = () => {
   };
 
   return (
-    <Container sx={{ padding: 2 }}>
+    <div>
       <br />
       {isLoading && <p>Loading...</p>}
       {error && <p>{error}</p>}
@@ -46,11 +46,11 @@ const PostsList: FC = () => {
       
       <Grid container spacing={2}>
         {sortedPosts.slice(0, visiblePosts).map((post) => (
-          <Grid item xs={12} sm={6} key={post._id}>
+          <Grid item xs={12} sm={6} md={4} key={post._id}>
             <ItemsList
               _id={post._id}
               sender={post.sender}
-              senderProfilePicture={post.senderProfilePicture} // Pass senderProfilePicture prop
+              senderProfilePicture={post.senderProfilePicture} 
               content={post.content}
               createdAt={post.createdAt}
               likes={post.likes}
@@ -60,7 +60,7 @@ const PostsList: FC = () => {
               user={user}
               onEditPost={handleEditPost}
               onDeletePost={handleDeletePost}
-              showMenu={false} // Hide the menu in PostsList
+              showMenu={false} 
             />
           </Grid>
         ))}
@@ -72,7 +72,7 @@ const PostsList: FC = () => {
           </Button>
         </Box>
       )}
-    </Container>
+    </div>
   );
 };
 

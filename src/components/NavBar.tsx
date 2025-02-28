@@ -37,7 +37,6 @@ const NavBar: React.FC = () => {
     <>
       <AppBar position="static" sx={{ backgroundColor: '#333' }}>
         <Toolbar sx={{ display: 'flex', justifyContent: 'space-between' }}>
-          {/* Logo and Title */}
           <Box sx={{ display: 'flex', alignItems: 'center' }}>
             <img src={logo} alt="TravelBuddy Logo" style={{ width: '40px', height: '40px', marginRight: '20px' }} />
             <Typography

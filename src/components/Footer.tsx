@@ -52,7 +52,7 @@ const Footer: React.FC = () => {
 						</IconButton>
 					</Box>
 
-					{/* Right Section - Copyright */}
+					
 					<Typography variant="body2" color="white">
 						&copy; {new Date().getFullYear()} Your Company. All rights reserved.
 					</Typography>
