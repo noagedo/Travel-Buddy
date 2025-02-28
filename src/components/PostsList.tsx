@@ -1,5 +1,5 @@
 import { FC, useEffect, useState } from "react";
-import { Grid, Container } from "@mui/material";
+import { Grid, Container, Button, Box } from "@mui/material";
 import ItemsList from "./ItemsList";
 import usePosts from "../hooks/usePosts";
 import useUsers from "../hooks/useUsers"; 
@@ -8,6 +8,7 @@ const PostsList: FC = () => {
   const { posts, isLoading, error } = usePosts();
   const { user: initialUser } = useUsers(); 
   const [user, setUser] = useState(initialUser);
+  const [visiblePosts, setVisiblePosts] = useState(5);
 
   useEffect(() => {
     const storedUser = localStorage.getItem('user');
@@ -32,6 +33,10 @@ const PostsList: FC = () => {
     // Add your delete logic here
   };
 
+  const handleLoadMorePosts = () => {
+    setVisiblePosts((prev) => prev + 5);
+  };
+
   return (
     <Container sx={{ padding: 2 }}>
       <br />
@@ -40,7 +45,7 @@ const PostsList: FC = () => {
       {sortedPosts.length === 0 && !isLoading && <p>No posts available.</p>}
       
       <Grid container spacing={2}>
-        {sortedPosts.map((post) => (
+        {sortedPosts.slice(0, visiblePosts).map((post) => (
           <Grid item xs={12} sm={6} key={post._id}>
             <ItemsList
               _id={post._id}
@@ -60,6 +65,13 @@ const PostsList: FC = () => {
           </Grid>
         ))}
       </Grid>
+      {visiblePosts < sortedPosts.length && (
+        <Box display="flex" justifyContent="center" mt={2}>
+          <Button onClick={handleLoadMorePosts} variant="contained">
+            Load More
+          </Button>
+        </Box>
+      )}
     </Container>
   );
 };
