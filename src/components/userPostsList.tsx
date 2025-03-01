@@ -2,7 +2,7 @@ import { FC } from "react";
 import { Grid, Box, Typography, CircularProgress } from "@mui/material";
 import ItemsList from "./ItemsList";
 import { Post } from "../services/post-service";
-import { User } from "../services/user-service"; // Import User interface
+import { User } from "../services/user-service"; 
 
 interface UserPostsListProps {
   posts: Post[];

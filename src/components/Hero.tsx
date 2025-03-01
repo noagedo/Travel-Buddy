@@ -1,32 +1,32 @@
 import React from 'react';
 import { Box, Typography, Button } from '@mui/material';
 import { useNavigate } from 'react-router-dom';
-import backgroundImage from '../assets/picture-HomePage.jpg'; // Adjust the path
+import backgroundImage from '../assets/picture-HomePage.jpg'; 
 
 const Hero: React.FC = () => {
   const navigate = useNavigate();
 
   const handleJoinNowClick = () => {
-    navigate('/sign-up'); // Correct the route to '/signup'
+    navigate('/sign-up'); 
   };
 
   return (
     <Box
       sx={{
         height: '100vh',
-        backgroundImage: `url(${backgroundImage})`, // Use the imported image
-        backgroundSize: 'cover', // Ensure the image covers the entire area
-        backgroundPosition: 'center', // Center the image
+        backgroundImage: `url(${backgroundImage})`, 
+        backgroundSize: 'cover', 
+        backgroundPosition: 'center', 
         display: 'flex',
         flexDirection: 'column',
         justifyContent: 'center',
         alignItems: 'center',
         color: 'white',
         textAlign: 'center',
-        position: 'relative', // Enable positioning for the overlay
+        position: 'relative', 
       }}
     >
-      {/* Dark overlay */}
+     
       <Box
         sx={{
           position: 'absolute',
@@ -34,11 +34,11 @@ const Hero: React.FC = () => {
           left: 0,
           right: 0,
           bottom: 0,
-          backgroundColor: 'rgba(0, 0, 0, 0.5)', // Semi-transparent black overlay
+          backgroundColor: 'rgba(0, 0, 0, 0.5)', 
           zIndex: 1,
         }}
       />
-      {/* Text container with higher z-index */}
+     
       <Box sx={{ zIndex: 2, position: 'relative', color: 'white' }}>
         <Typography variant="h3" fontWeight="bold" sx={{ mb: 2 }}>
           TravelBuddy - A Network for Travelers

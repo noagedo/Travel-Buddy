@@ -50,7 +50,6 @@ const PersonalArea: FC<PersonalAreaProps> = ({ user }) => {
       const updatedUser = { ...user, userName, email, profilePicture: avatarUrl };
       const result = await updateUser(updatedUser);
       if (result.success) {
-        // Update the user's name and profile picture in all posts
         const updatedPosts = userPosts.map((post) => ({
           ...post,
           sender: userName,
@@ -59,17 +58,18 @@ const PersonalArea: FC<PersonalAreaProps> = ({ user }) => {
         await Promise.all(updatedPosts.map((post) => postService.update(post)));
         setPosts(posts.map((post): Post => (post.sender === user.userName ? { ...post, sender: userName, senderProfilePicture: avatarUrl ?? "" } : post)));
 
-        // Update the user's name in all comments
+        
         const { data: comments } = await (await commentService.getAll().request);
         const userComments = comments.filter((comment: Comment) => comment.sender === user.userName);
         const updatedComments = userComments.map((comment: Comment) => ({
           ...comment,
           sender: userName,
+          senderProfilePicture: avatarUrl ?? "",
         }));
         await Promise.all(updatedComments.map((comment: Comment) => commentService.update(comment)));
 
         setEditMode(false);
-        window.location.reload(); // Reload the page to reflect changes
+        window.location.reload(); 
       } else {
         setUpdateError(result.error ?? null);
       }

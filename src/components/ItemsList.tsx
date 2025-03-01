@@ -27,9 +27,9 @@ import MoreVertIcon from "@mui/icons-material/MoreVert";
 import CommentIcon from "@mui/icons-material/Comment";
 import ArrowBackIcon from "@mui/icons-material/ArrowBack";
 import postService from "../services/post-service";
-import { User } from "../services/user-service"; // Assuming you have a User interface
-import commentService from "../services/comment-service"; // Import comment service
-import useComments from "../hooks/useComments"; // Import useComments hook
+import { User } from "../services/user-service"; 
+import commentService from "../services/comment-service";
+import useComments from "../hooks/useComments"; 
 
 interface ItemsListProps {
   _id: string;
@@ -44,7 +44,7 @@ interface ItemsListProps {
   user?: User; 
   onEditPost?: (postId: string) => void; 
   onDeletePost?: (postId: string) => void; 
-  showMenu?: boolean; // Add this prop to control the visibility of the menu
+  showMenu?: boolean;
 }
 
 const ItemsList: FC<ItemsListProps> = ({ _id, sender, senderProfilePicture, content, createdAt, likes, likesBy, photos, user, onEditPost, onDeletePost, showMenu = true }) => {
@@ -78,7 +78,7 @@ const ItemsList: FC<ItemsListProps> = ({ _id, sender, senderProfilePicture, cont
       });
     } catch (err) {
       console.error("Error updating likes:", err);
-      // Revert the state if the update fails
+     
       setIsLiked(isLiked);
       setCurrentLikes(isLiked ? currentLikes - 1 : currentLikes + 1);
     }
@@ -105,7 +105,7 @@ const ItemsList: FC<ItemsListProps> = ({ _id, sender, senderProfilePicture, cont
         };
         const { request } = commentService.add(comment); 
         const response = await request;
-        setComments([...comments, response.data]); // Add the new comment object to the state
+        setComments([...comments, response.data]); 
         setNewComment("");
       } catch (err) {
         console.error("Error adding comment:", err);
@@ -186,7 +186,7 @@ const ItemsList: FC<ItemsListProps> = ({ _id, sender, senderProfilePicture, cont
   sx={{
     flexGrow: 1,
     display: "flex",
-    flexDirection: "column", // Ensures content stacks vertically
+    flexDirection: "column", 
   }}
 >
   <Typography
@@ -231,7 +231,7 @@ const ItemsList: FC<ItemsListProps> = ({ _id, sender, senderProfilePicture, cont
         overflowX: "scroll",
         gap: 2,
         padding: 2,
-        mt: "auto", // Pushes images to the bottom
+        mt: "auto", 
       }}
     >
       {photos.map((photo, index) => (
@@ -264,38 +264,40 @@ const ItemsList: FC<ItemsListProps> = ({ _id, sender, senderProfilePicture, cont
       </Stack>
       {isLoading && <p>Loading comments...</p>}
       {error && <p>{error}</p>}
-      <List>
-        {comments.map((comment, index) => (
-          <ListItem key={index} alignItems="flex-start">
-            <ListItemAvatar>
-              <Avatar alt={comment.sender} src={comment.senderProfilePicture} />
-            </ListItemAvatar>
-            <ListItemText
-              primary={
-                <React.Fragment>
-                  <Typography
-                    sx={{ display: "inline" }}
-                    component="span"
-                    variant="body2"
-                    color="text.primary"
-                  >
-                    {comment.sender}
-                  </Typography>
-                  <br />
-                  <Typography
-                    sx={{ wordWrap: "break-word" }}
-                    component="span"
-                    variant="body2"
-                    color="text.secondary"
-                  >
-                    {comment.content}
-                  </Typography>
-                </React.Fragment>
-              }
-            />
-          </ListItem>
-        ))}
-      </List>
+      <Box sx={{ maxHeight: 200, overflowY: 'auto' }}>
+        <List>
+          {comments.map((comment, index) => (
+            <ListItem key={index} alignItems="flex-start">
+              <ListItemAvatar>
+                <Avatar alt={comment.sender} src={comment.senderProfilePicture} />
+              </ListItemAvatar>
+              <ListItemText
+                primary={
+                  <React.Fragment>
+                    <Typography
+                      sx={{ display: "inline" }}
+                      component="span"
+                      variant="body2"
+                      color="text.primary"
+                    >
+                      {comment.sender}
+                    </Typography>
+                    <br />
+                    <Typography
+                      sx={{ wordWrap: "break-word" }}
+                      component="span"
+                      variant="body2"
+                      color="text.secondary"
+                    >
+                      {comment.content}
+                    </Typography>
+                  </React.Fragment>
+                }
+              />
+            </ListItem>
+          ))}
+        </List>
+      </Box>
     </Box>
   )}
 </CardContent>

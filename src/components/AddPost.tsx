@@ -1,4 +1,5 @@
 import { FC, useState } from "react";
+import { useNavigate } from "react-router-dom";
 import postService, { Post } from "../services/post-service";
 import { User } from "../services/user-service";
 import {
@@ -35,13 +36,15 @@ const AddPost: FC<AddPostProps> = ({ user }) => {
   const [successMessage, setSuccessMessage] = useState<string | null>(null);
   const [loadingGPT, setLoadingGPT] = useState(false); 
   const [suggestion, setSuggestion] = useState<string>(""); 
+  const navigate = useNavigate();
+
   const handleSubmit = async (e: React.FormEvent) => {
     e.preventDefault();
     setError(null);
     setSuccessMessage(null);
 
     try {
-      // Upload each photo and get URLs
+      
       const uploadedUrls = await Promise.all(
         photos.map(async (photo) => {
           const formData = new FormData();
@@ -64,6 +67,7 @@ const AddPost: FC<AddPostProps> = ({ user }) => {
       setSuccessMessage("Post added successfully!");
       setContent("");
       setPhotos([]);
+      navigate("/posts"); 
     } catch (err) {
       console.error("Error adding post:", err);
       setError("An error occurred while adding the post. Please try again.");

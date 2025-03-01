@@ -5,14 +5,14 @@ import { CredentialResponse } from '@react-oauth/google';
 const useUsers = () => {
   const [user, setUser] = useState<User | null>(null);
   const [error, setError] = useState<string | null>(null);
-  const [isLoading, setIsLoading] = useState<boolean>(true); // Set initial loading state to true
+  const [isLoading, setIsLoading] = useState<boolean>(true); 
 
   useEffect(() => {
     const storedUser = localStorage.getItem('user');
     if (storedUser) {
       setUser(JSON.parse(storedUser));
     }
-    setIsLoading(false); // Set loading state to false after checking local storage
+    setIsLoading(false); 
   }, []);
 
   const signIn = async (email: string, password: string) => {

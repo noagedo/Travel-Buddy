@@ -11,7 +11,7 @@ export interface Post {
   likes: number;
   likesBy: string[];
   photos: string[];
-  senderProfilePicture: string; // Add senderProfilePicture field
+  senderProfilePicture: string; 
 }
 
 const postService = createHttpService<Post>("/posts");
