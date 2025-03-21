@@ -1,0 +1,107 @@
+@media (max-width: 768px) {
+    body {
+        font-size: 14px;
+        padding: 10px;
+    }
+
+    .container {
+        flex-direction: column;
+        padding: 5px;
+    }
+
+    .navbar {
+        flex-wrap: wrap;
+    }
+
+    .navbar a {
+        display: block;
+        margin: 5px 0;
+    }
+}
+
+/* djust layout for screens smaller than 480px */
+@media (max-width: 480px) {
+    body {
+        font-size: 12px;
+    }
+
+    .header {
+        text-align: center;
+    }
+
+    .content {
+        padding: 5px;
+    }
+}
+
+/* iPhone SE and small phones (320px width) */
+@media (max-width: 320px) {
+    body {
+        font-size: 12px;
+        padding: 5px;
+        line-height: 1.4;
+    }
+
+    .container {
+        flex-direction: column;
+        padding: 5px;
+    }
+
+    .navbar a {
+        font-size: 14px;
+        margin: 5px 0;
+        padding: 8px;
+    }
+
+    .button {
+        width: 100%;
+        font-size: 14px;
+    }
+}
+
+/* Standard phones like iPhone 12 Mini (375px width) */
+@media (max-width: 375px) {
+    body {
+        font-size: 14px;
+        padding: 10px;
+        line-height: 1.5;
+    }
+
+    .header {
+        text-align: center;
+        padding: 10px;
+    }
+
+    .content {
+        padding: 10px;
+    }
+
+    .button {
+        width: 100%;
+        font-size: 16px;
+    }
+}
+
+/* Larger phones like iPhone 12 Pro Max (428px width) */
+@media (max-width: 428px) {
+    body {
+        font-size: 16px;
+        padding: 15px;
+        line-height: 1.6;
+    }
+
+    .navbar {
+        flex-wrap: wrap;
+    }
+
+    .navbar a {
+        display: block;
+        margin: 5px 0;
+        padding: 10px;
+    }
+
+    .button {
+        width: auto;
+        font-size: 18px;
+    }
+}
